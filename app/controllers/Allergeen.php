@@ -34,8 +34,8 @@ class Allergeen extends Controller
             <td>$value->Naam</td>
             <td>$value->Omschrijving</td>
             <td>$value->KlantNaam</td>
-            <td><a href='" . URLROOT . "/allergeen/update/$value->Id'>Update</a></td>
-            <td><a href='" . URLROOT . "/allergeen/delete/$value->Id'>delete</a></td>
+            <td><a href='" . URLROOT . "/allergeen/update/$value->Id'><img src='" . URLROOT . "/img/bx-edit.svg' alt='Info'></a>
+            <td><a href='" . URLROOT . "/allergeen/delete/$value->Id'><img src='" . URLROOT . "/img/bx-x.svg' alt='Info'></a>
         </tr>";
     }
     $data = [
