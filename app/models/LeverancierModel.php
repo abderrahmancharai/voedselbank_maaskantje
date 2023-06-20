@@ -119,4 +119,54 @@ class LeverancierModel
         return $result;
 
     }
+
+    public function detailsname($LeverancierId)
+    {
+
+        $sql="
+        select leverancier.BedrijfsNaam,
+		leverancier.ContactPersoon
+         from leverancier
+        where leverancier.Id =:leverancierId";
+        $this->db->query($sql);
+        $this->db->bind(':leverancierId', $LeverancierId, PDO::PARAM_INT);
+        $result = $this->db->single();
+        return $result;
+
+    }
+    public function detailsleverancierbyid($LeverancierId)
+    {
+
+        $sql="
+        select leverancier.BedrijfsNaam,
+		leverancier.ContactPersoon,
+        leveranciercontact.Email,
+          leveranciercontact.Mobiel,
+          leveranciercontact.Huisnummer,
+                  leveranciercontact.Straat,
+               leveranciercontact.Postcode,
+               productperleverancier.DatumEerstVolgendeLevering,
+               product.Naam
+       
+        
+        
+         from leverancier
+        
+        inner join  productperleverancier on
+        Leverancier.Id = productperleverancier.LeverancierId
+        
+          inner join  leveranciercontact on
+        Leverancier.Id = leveranciercontact.LeverancierId
+        
+         inner join  product on
+        product.Id = productperleverancier.ProductId
+        
+        where leverancier.Id =:leverancierId";
+        $this->db->query($sql);
+        $this->db->bind(':leverancierId', $LeverancierId, PDO::PARAM_INT);
+        $result = $this->db->resultSet();
+        return $result;
+
+    }
+
 }

@@ -87,4 +87,34 @@ class leverancier extends Controller
         $this->view('Leverancier/update', $data);
     }
 }
+public function details($leverancierId)
+{
+
+    $detailsleverancierbyid = $this->LeverancierModel->detailsleverancierbyid($leverancierId);
+    $detailsname = $this->LeverancierModel->detailsname($leverancierId);
+
+        $rows = '';
+        foreach ($detailsleverancierbyid as $value) {
+            $rows .= "<tr>             
+                        <td>$value->Naam</td>
+                        <td>$value->Email</td>  
+                        <td>$value->Mobiel</td>
+                        <td>$value->Straat</td>
+                        <td>$value->Huisnummer</td>
+                        <td>$value->Postcode</td>
+                        <td>$value->DatumEerstVolgendeLevering</td>
+                        </tr>
+                        ";
+        }
+
+        $data = [
+            'title' => 'magazijn in dienst',
+            'ContactPersoon' => $detailsname->ContactPersoon,
+            'BedrijfsNaam' => $detailsname->BedrijfsNaam,
+            'rows' => $rows
+        ];
+   
+
+    $this->view('Leverancier/details', $data);
+}
 }
