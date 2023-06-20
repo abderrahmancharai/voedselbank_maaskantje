@@ -46,14 +46,18 @@ class Klant extends Controller
 
     public function update($klantId = 0)
     {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-   
-    $updateklant = $this->KlantModel->KlantUpdate($POST);
-    $klantId=  $POST["GezinId"];
+         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+         
+            $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    header("Refresh: 2; URL=" . URLROOT . "/Klant/index/$klantId");
-    echo "de klant is succesvol gewijzigd";
+            if(empty($POST["naam"])){
+                header("Refresh: 4; URL=" . URLROOT . "/Klant/index");
+                echo "Vul veld naam in";
+            }else{
+                  $this->KlantModel->KlantUpdate($POST);
+                 header("Refresh: 2; URL=" . URLROOT . "/Klant/index");
+                    echo "Klant is gewijzigd";
+                 }
     }else{
 
     
