@@ -139,4 +139,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $this->view('Leverancier/toevoegen');
 }
 }
+
+public function delete($LeverancierId)
+{
+
+
+    $delete = $this->LeverancierModel->delete($LeverancierId);
+
+   
+
+
+
+
+
+
+
+    $this->view('Leverancier/delete');
+}
 }

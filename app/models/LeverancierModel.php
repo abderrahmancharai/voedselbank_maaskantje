@@ -226,6 +226,17 @@ class LeverancierModel
     }
     }
 
+    public function delete($LeverancierId)
+    {
+        $sql=" DELETE FROM productperleverancier WHERE `productperleverancier`.`Id` = :leverancierId";
+        $this->db->query($sql);
+        $this->db->bind(':leverancierId', $LeverancierId, PDO::PARAM_INT);
+        $result = $this->db->single();
+        return $result;
+       
+    }
+    
+
    
 }
 
