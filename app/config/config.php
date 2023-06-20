@@ -7,7 +7,7 @@ define('DB_NAME', 'Voedselbank_Maaskantje');
 define('APPROOT', dirname(dirname(__FILE__))) ;
 
 // Zet hier je virtualhostnaam. Let op dat er http:// voor staat anders werkt het niet
-define('URLROOT', 'http://www.voedselbank.nl');
+define('URLROOT', 'http://voedselbankmaaskantjedag2.nl');
 
 define('SITENAME', 'MVC Framework reference');
 ?>

@@ -2,8 +2,9 @@
 
 
 
-<a href="<?=URLROOT;?>/leverancier/index">leverancier</a> | 
-
-
 
 <?php require APPROOT . '/views/includes/footer.php'; ?>
+
+    
+</body>
+</html>
