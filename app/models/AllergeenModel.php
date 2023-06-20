@@ -59,4 +59,22 @@ public function updateAllergeen($data)
     }
 }
 
+public function delete($allergeenId)
+{
+    try {
+        $this->db->query("DELETE FROM productperallergeen WHERE AllergeenId = :allergeenId");
+        $this->db->bind(':allergeenId', $allergeenId, PDO::PARAM_INT);
+        $this->db->execute();
+
+        $this->db->query("DELETE FROM Allergeen WHERE Id = :allergeenId");
+        $this->db->bind(':allergeenId', $allergeenId, PDO::PARAM_INT);
+        $this->db->execute();
+
+        return true; 
+    } catch (PDOException $e) {
+        echo "Databasefout: " . $e->getMessage();
+        return false;
+    }
+}
+
 }

@@ -3,23 +3,18 @@
 class Allergeen extends Controller
 
 {
-    // Properties, field
     private $allergeenModel;
 
-    // Constructor
     public function __construct()
     {
-        $this->allergeenModel = $this->model('AllergeenModel'); // Model initialization
+        $this->allergeenModel = $this->model('AllergeenModel');
     }
 
     public function index()
     {
-        // Your code for the index method goes here
-        // This method will handle the default behavior of the Allergeen controller
 
         $data = [
             'title' => 'Allergeen Index'
-            // Add any other data you need to pass to the view
         ];
 
         $this->view('allergeen/index', $data);
@@ -47,6 +42,9 @@ class Allergeen extends Controller
 
 public function update($allergeenId)
 {
+
+    session_start();
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
@@ -58,6 +56,8 @@ public function update($allergeenId)
         ];
 
         $this->allergeenModel->updateAllergeen($data);
+
+        $SESSION['message'] = 'Successful update';
 
         header("Location: " . URLROOT . "/allergeen/allergeenoverzicht");
         exit();
@@ -75,6 +75,23 @@ public function update($allergeenId)
         }
     }
 }
+
+public function delete($allergeenId)
+{
+    $deleteStatus = $this->allergeenModel->delete($allergeenId);
+
+    if ($deleteStatus) {
+      $data = ['deleteStatus' => 'Allergeen is verwijderd'];
+
+    // Set the redirect URL
+    $redirectURL = URLROOT . '/allergeen/allergeenoverzicht';
+
+    // Redirect to the specified URL after 3 seconds
+    header("Refresh: 3; url=" . $redirectURL);
+    exit; // Terminate script execution after redirection
+}
+}
+
 
 
 
