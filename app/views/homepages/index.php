@@ -14,25 +14,3 @@
 <h1>welkom mederwerker</h1>
 
 
-<a href="<?=URLROOT;?>/VoedselPakket/index">Klanten Voedselpakket</a> | 
-<a href="<?=URLROOT;?>/leverancier/index">leverancier</a> | 
-
-
-
-
-<style>
-    .bx {
-        font-size: 2rem;
-        cursor: pointer;
-    }
-  
-</style>
-
-
-
-
-<?php require APPROOT . '/views/includes/footer.php'; ?>
-
-    
-</body>
-</html>
