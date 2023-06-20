@@ -51,42 +51,39 @@ class leverancier extends Controller
 
     public function update($leverancierId = 0)
     {
-
-
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        var_dump($POST);
-        $update = $this->LeverancierModel->  update($POST);
-   
-
-
-    } else {
-
-        $updateleverancierbyid = $this->LeverancierModel->updateleverancierbyid($leverancierId);
-
-
-
-
-
-        $data = [
-            'title' => 'magazijn in dienst',
-            'leverancierId' => $updateleverancierbyid->leverancierId,
-            'ContactPersoon' => $updateleverancierbyid->ContactPersoon,
-            'BedrijfsNaam' => $updateleverancierbyid->BedrijfsNaam,
-            'Email' => $updateleverancierbyid->Email,
-            'Mobiel' => $updateleverancierbyid->Mobiel,
-            'Huisnummer' => $updateleverancierbyid->Huisnummer,
-            'Straat' => $updateleverancierbyid->Straat,
-            'Postcode' => $updateleverancierbyid->Postcode,
-            'DatumEerstVolgendeLevering' => $updateleverancierbyid->DatumEerstVolgendeLevering,
-            'product' => $updateleverancierbyid->Naam,
-            'DatumLevering' => $updateleverancierbyid->DatumLevering,
-        ];
-
-
-        $this->view('Leverancier/update', $data);
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            
+            if (empty($POST["product"])) {
+                echo "je bent vergeten om iets in tevullen bij product";
+                header("Refresh: 4; URL=" . URLROOT . "/leverancier/index");
+            } else {
+                $update = $this->LeverancierModel->update($POST);
+                echo "leverancier is geupdate";
+                header("Refresh: 4; URL=" . URLROOT . "/leverancier/index");
+            }
+        } else {
+            $updateleverancierbyid = $this->LeverancierModel->updateleverancierbyid($leverancierId);
+    
+            $data = [
+                'title' => 'magazijn in dienst',
+                'leverancierId' => $updateleverancierbyid->leverancierId,
+                'ContactPersoon' => $updateleverancierbyid->ContactPersoon,
+                'BedrijfsNaam' => $updateleverancierbyid->BedrijfsNaam,
+                'Email' => $updateleverancierbyid->Email,
+                'Mobiel' => $updateleverancierbyid->Mobiel,
+                'Huisnummer' => $updateleverancierbyid->Huisnummer,
+                'Straat' => $updateleverancierbyid->Straat,
+                'Postcode' => $updateleverancierbyid->Postcode,
+                'DatumEerstVolgendeLevering' => $updateleverancierbyid->DatumEerstVolgendeLevering,
+                'product' => $updateleverancierbyid->Naam,
+                'DatumLevering' => $updateleverancierbyid->DatumLevering,
+            ];
+    
+            $this->view('Leverancier/update', $data);
+        }
     }
-}
+    
 public function details($leverancierId)
 {
 
