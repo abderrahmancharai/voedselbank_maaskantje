@@ -2,8 +2,7 @@
 
 <h1>welkom mederwerker</h1>
 
-<a href="<?=URLROOT;?>/klanten/klantenoverzicht">klanten overzicht</a> | 
-<a href="<?=URLROOT;?>/klanten/klantenoverzichtupdate">klanten overzichtupdate</a> | 
+<a href="<?=URLROOT;?>/Klant/index">klanten overzicht</a> | 
 
 
 <?php require APPROOT . '/views/includes/footer.php'; ?>
