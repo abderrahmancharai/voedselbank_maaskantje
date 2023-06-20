@@ -46,6 +46,17 @@ class Klant extends Controller
 
     public function update($klantId = 0)
     {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+   
+    $updateklant = $this->KlantModel->KlantUpdate($POST);
+    $klantId=  $POST["GezinId"];
+
+    header("Refresh: 2; URL=" . URLROOT . "/Klant/index/$klantId");
+    echo "de klant is gewijzigd";
+    }else{
+
+    
 
         $KlantUpdate = $this->KlantModel->KlantUpdatedetails($klantId);
 
@@ -63,4 +74,5 @@ class Klant extends Controller
 
          $this->view('Klant/update', $data);
     }
+ }
 }
