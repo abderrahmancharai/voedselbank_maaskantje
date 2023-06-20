@@ -131,6 +131,7 @@ class VoedselPakket extends Controller
 }
 
     public function delete($Id) {
+        
     $this->VoedselPakketModel->delete($Id);
 
     $data =[
