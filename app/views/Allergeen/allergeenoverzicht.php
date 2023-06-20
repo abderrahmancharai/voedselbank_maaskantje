@@ -6,9 +6,9 @@
     <table class="table">
         <thead class="thead-dark">
             <tr>
+                <th scope="col">KlantNaam</th>
                 <th scope="col">Naam</th>
                 <th scope="col">Omschrijving</th>
-                <th scope="col">KlantNaam</th>
                 <th scope="col">Update</th>
                 <th scope="col">Delete</th>
             </tr>

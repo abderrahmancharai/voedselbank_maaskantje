@@ -31,9 +31,9 @@ class Allergeen extends Controller
     $rows = '';
     foreach ($allergeen as $value) {
         $rows .= "<tr>
+            <td>$value->KlantNaam</td>
             <td>$value->Naam</td>
             <td>$value->Omschrijving</td>
-            <td>$value->KlantNaam</td>
             <td><a href='" . URLROOT . "/allergeen/update/$value->Id'><img src='" . URLROOT . "/img/bx-edit.svg' alt='Info'></a>
             <td><a href='" . URLROOT . "/allergeen/delete/$value->Id'><img src='" . URLROOT . "/img/bx-x.svg' alt='Info'></a>
         </tr>";
@@ -44,4 +44,38 @@ class Allergeen extends Controller
     ];
     $this->view('allergeen/allergeenoverzicht', $data);
 }
+
+public function update($allergeenId)
+{
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $data = [
+            'allergeenId' => $allergeenId,
+            'naam' => $_POST['naam'],
+            'omschrijving' => $_POST['omschrijving'],
+            'klantnaam' => $_POST['klantNaam']
+        ];
+
+        $this->allergeenModel->updateAllergeen($data);
+
+        header("Location: " . URLROOT . "/allergeen/allergeenoverzicht");
+        exit();
+    } else {
+        $allergeen = $this->allergeenModel->getSingleAllergeen($allergeenId);
+
+        if ($allergeen) {
+            $data = [
+                'title' => 'Update Allergeen',
+                'allergeen' => $allergeen
+            ];
+
+            $this->view("allergeen/update", $data);
+        } else {
+        }
+    }
+}
+
+
+
 }
