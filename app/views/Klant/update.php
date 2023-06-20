@@ -12,41 +12,41 @@
 
             <div class="form-group row">
                <label class="col-sm-3 control-label">Naam:</label>
-               <input type="text"  name ="naam" value="<?= $data["Naam"];?>"></input>
+               <input type="text" name ="naam" value="<?= $data["Naam"];?>"></input>
             </div>
 
             <div class="form-group row">
                <label class="col-sm-3 control-label">Plaats:</label>
-               <input type="text"  name ="Plaats"  value="<?= $data["Plaats"];?>"></input>
+               <input type="text" required name ="Plaats"  value="<?= $data["Plaats"];?>"></input>
             </div>
 
             <div class="form-group row">
                <label class="col-sm-3 control-label">Telefoonnummer:</label>
-               <input type="number"  name ="Telefoonnummer"  value="<?= $data["Telefoonnummer"];?>"></input>
+               <input type="number" required name ="Telefoonnummer"  value="<?= $data["Telefoonnummer"];?>"></input>
             </div>
 
             <div class="form-group row">
                <label class="col-sm-3 control-label">Email:</label>
-               <input type="text"  name ="Email"  value="<?= $data["Email"];?>"></input>
+               <input type="text" required name ="Email"  value="<?= $data["Email"];?>"></input>
             </div>
             <!-- minlength="11" maxlength="11" -->
 
             <div class="form-group row">
                <label class="col-sm-3 control-label">AantalVolwassen:</label>
-               <input type="number" name ="AantalVolwassen"  value="<?= $data["AantalVolwassen"];?>"></input>
+               <input type="number" required name ="AantalVolwassen"  value="<?= $data["AantalVolwassen"];?>"></input>
             </div>
 
 
             <div class="form-group row">
                <label class="col-sm-3 control-label">AantalKinderen:</label>
-               <input type="number" name ="AantalKinderen"  value="<?= $data["AantalKinderen"];?>"></input>
+               <input type="number" required name ="AantalKinderen"  value="<?= $data["AantalKinderen"];?>"></input>
             </div>
 
       
 
             <div class="form-group row">
                <label class="col-sm-3 control-label">AantalBaby:</label>
-               <input type="number" name ="AantalBaby"  value="<?= $data["AantalBaby"];?>"></input>
+               <input type="number" required name ="AantalBaby"  value="<?= $data["AantalBaby"];?>"></input>
             </div>
        
                 

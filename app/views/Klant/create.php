@@ -18,35 +18,35 @@
 
             <div class="form-group row">
                <label class="col-sm-3 control-label">Plaats:</label>
-               <input type="text"  name ="Plaats"></input>
+               <input type="text" required name ="Plaats"></input>
             </div>
 
             <div class="form-group row">
                <label class="col-sm-3 control-label">Telefoonnummer:</label>
-               <input type="number"  name ="Telefoonnummer"></input>
+               <input type="number" required name ="Telefoonnummer"></input>
             </div>
 
             <div class="form-group row">
                <label class="col-sm-3 control-label">Email:</label>
-               <input type="text"  name ="Email"></input>
+               <input type="text" required name ="Email"></input>
             </div>
             <!-- minlength="11" maxlength="11" -->
 
             <div class="form-group row">
                <label class="col-sm-3 control-label">AantalVolwassen:</label>
-               <input type="number" name ="aantalVolwassen"></input>
+               <input type="number" required name ="aantalVolwassen"></input>
             </div>
 
 
             <div class="form-group row">
                <label class="col-sm-3 control-label">AantalKinderen:</label>
-               <input type="number" name ="AantalKinderen"></input>
+               <input type="number" required name ="AantalKinderen"></input>
             </div>
       
 
             <div class="form-group row">
                <label class="col-sm-3 control-label">AantalBaby:</label>
-               <input type="number" name ="AantalBaby"></input>
+               <input type="number" required name ="AantalBaby"></input>
             </div>
                 
             <div class="form-group row">
