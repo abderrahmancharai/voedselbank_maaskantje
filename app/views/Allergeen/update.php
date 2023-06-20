@@ -10,7 +10,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-3 control-label">Klant Naam</label>
-                    <input class="form-control" type="text" name="klantNaam" id="klantNaam"
+                    <input class="form-control" type="text" required name="klantNaam" id="klantNaam"
                         value="<?= $data['allergeen']->KlantNaam; ?>">
                 </div>
 

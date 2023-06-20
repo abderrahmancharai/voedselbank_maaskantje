@@ -105,7 +105,7 @@ public function create()
                 'klantnaam' => isset($_POST['klantnaam']) ? trim($_POST['klantnaam']) : ''
             ];
 
-            if (empty($data['naam']) || empty($data['omschrijving']) || empty($data['klantnaam'])) {
+            if (empty($data['omschrijving']) || empty($data['klantnaam'])) {
                 echo "Vul alle velden in";
                 header("Refresh: 4; URL=" . URLROOT . "/allergeen/allergeenoverzicht");
             } else {
