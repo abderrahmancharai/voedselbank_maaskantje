@@ -53,7 +53,7 @@ class Klant extends Controller
     $klantId=  $POST["GezinId"];
 
     header("Refresh: 2; URL=" . URLROOT . "/Klant/index/$klantId");
-    echo "de klant is gewijzigd";
+    echo "de klant is succesvol gewijzigd";
     }else{
 
     
@@ -80,13 +80,35 @@ class Klant extends Controller
   {
     $deleteStatus = $this->KlantModel->delete($klantId);
 
-    if ($deleteStatus) {
-        $data = ['deleteStatus' => 'Klant is verwijderd'];
-    } else {
-        $data = ['deleteStatus' => 'Er is iets fout gegaan'];
-    }
 
-    // Pass the data to the view
-    $this->view('Klant/delete', $data);
+        header("Refresh: 2; URL=" . URLROOT . "/Klant/index/$klantId");
+         echo "de klant is succesvol verwijderd";
+
   }
+
+
+  public function create()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+         
+            $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            if(empty($POST["naam"])){
+                echo "Vul veld naam in";
+                header("Refresh: 4; URL=" . URLROOT . "/Klant/index");
+            }else{
+                 $this->KlantModel->createKlant($POST);
+                 header("Refresh: 2; URL=" . URLROOT . "/Klant/index");
+                    echo "Klant is gemaakt";
+                 }
+    }else{
+        
+        $data = [
+            'title' => "Create Klant"
+        ];
+
+        $this->view("Klant/create", $data);
+        }
+    
+}
 }

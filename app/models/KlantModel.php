@@ -129,4 +129,64 @@ class KlantModel {
         $result = $this->db->single();
         return $result;
     }
+
+    public function createKlant($post) {
+    try {
+    
+   
+        // Insert into Gezin table
+        $this->db->query("INSERT INTO Gezin (AantalVolwassen, 
+                                             AantalKinderen, 
+                                             AantalBaby, 
+                                             IsActive, 
+                                             Opmerking, 
+                                             DatumAangemaakt, 
+                                             Datumgewijzigd)
+            VALUES (:aantalVolwassen, :AantalKinderen, :AantalBaby, 1, NULL, SYSDATE(6), SYSDATE(6));
+        ");
+  $this->db->bind(':aantalVolwassen', $post['aantalVolwassen'], PDO::PARAM_INT);
+  $this->db->bind(':AantalKinderen', $post['AantalKinderen'], PDO::PARAM_INT);
+  $this->db->bind(':AantalBaby', $post['AantalBaby'], PDO::PARAM_INT);
+
+        $this->db->execute();
+
+
+        // Insert into Klant table
+        $this->db->query("INSERT INTO Klant (GezinId, 
+                               Naam, 
+                               IsActive, 
+                               DatumAangemaakt, 
+                               Datumgewijzigd)
+            VALUES (LAST_INSERT_ID(), :naam, 1, SYSDATE(6), SYSDATE(6))
+        ");
+
+        $this->db->bind(':naam', $post['naam'], PDO::PARAM_STR);
+        $this->db->execute();
+
+
+
+        // Insert into Allergie table
+        $this->db->query("INSERT INTO Contact (KlantId, 
+                                                 Plaats,
+                                                 Telefoonnummer,
+                                                 Email, 
+                                                 IsActive, 
+                                                 DatumAangemaakt, 
+                                                 Datumgewijzigd)
+            VALUES (LAST_INSERT_ID(), :Plaats, :Telefoonnummer, :Email, 1, SYSDATE(6), SYSDATE(6))
+        ");
+
+        $this->db->bind(':Plaats', $post['Plaats'], PDO::PARAM_STR);
+        $this->db->bind(':Telefoonnummer', $post['Telefoonnummer'], PDO::PARAM_STR);
+        $this->db->bind(':Email', $post['Email'], PDO::PARAM_STR);
+        $this->db->execute();
+
+
+
+        return true;
+    } catch (PDOException $e) {
+        echo "Databasefout: " . $e->getMessage();
+        return false;
+    }
+}
 }

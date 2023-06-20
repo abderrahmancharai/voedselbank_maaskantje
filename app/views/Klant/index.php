@@ -1,5 +1,6 @@
 <?php require APPROOT . '/views/includes/head.php'; ?>
 <body>
+  <a href="<?=URLROOT;?>/Klant/create">Klant toevoegen</a>
 <p><h3><?= $data["title"]; ?></h3></p>
     <table class="table">
   <thead class="thead-dark">
