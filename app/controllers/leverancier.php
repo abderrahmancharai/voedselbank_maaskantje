@@ -48,4 +48,43 @@ class leverancier extends Controller
 
         $this->view('leverancier/index',$data);
     }
+
+    public function update($leverancierId = 0)
+    {
+
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        var_dump($POST);
+        $update = $this->LeverancierModel->  update($POST);
+   
+
+
+    } else {
+
+        $updateleverancierbyid = $this->LeverancierModel->updateleverancierbyid($leverancierId);
+
+
+
+
+
+        $data = [
+            'title' => 'magazijn in dienst',
+            'leverancierId' => $updateleverancierbyid->leverancierId,
+            'ContactPersoon' => $updateleverancierbyid->ContactPersoon,
+            'BedrijfsNaam' => $updateleverancierbyid->BedrijfsNaam,
+            'Email' => $updateleverancierbyid->Email,
+            'Mobiel' => $updateleverancierbyid->Mobiel,
+            'Huisnummer' => $updateleverancierbyid->Huisnummer,
+            'Straat' => $updateleverancierbyid->Straat,
+            'Postcode' => $updateleverancierbyid->Postcode,
+            'DatumEerstVolgendeLevering' => $updateleverancierbyid->DatumEerstVolgendeLevering,
+            'product' => $updateleverancierbyid->Naam,
+            'DatumLevering' => $updateleverancierbyid->DatumLevering,
+        ];
+
+
+        $this->view('Leverancier/update', $data);
+    }
+}
 }
