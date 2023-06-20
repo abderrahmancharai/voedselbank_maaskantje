@@ -15,6 +15,8 @@
 
 
 <a href="<?=URLROOT;?>/VoedselPakket/index">Klanten Voedselpakket</a> | 
+<a href="<?=URLROOT;?>/leverancier/index">leverancier</a> | 
+
 
 <a href="wwww.jsaidnas"></a>
 
