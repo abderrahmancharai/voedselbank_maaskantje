@@ -9,6 +9,7 @@
       <th scope="col">Categorie</th>
       <th scope="col">Aantal</th>
       <th scope="col">Product</th>
+      <th scope="col">Wijzigen</th>
 
     </tr>
   </thead>
