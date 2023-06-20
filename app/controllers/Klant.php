@@ -75,4 +75,18 @@ class Klant extends Controller
          $this->view('Klant/update', $data);
     }
  }
+
+ public function delete($klantId)
+  {
+    $deleteStatus = $this->KlantModel->delete($klantId);
+
+    if ($deleteStatus) {
+        $data = ['deleteStatus' => 'Klant is verwijderd'];
+    } else {
+        $data = ['deleteStatus' => 'Er is iets fout gegaan'];
+    }
+
+    // Pass the data to the view
+    $this->view('Klant/delete', $data);
+  }
 }

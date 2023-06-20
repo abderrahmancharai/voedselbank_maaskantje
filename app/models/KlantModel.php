@@ -108,4 +108,25 @@ class KlantModel {
             throw $error->getMessage();
         }
     }
+
+    public function delete($klantId)
+    {
+      $sql="DELETE FROM Contact WHERE Contact.Id = :klantId";
+        $this->db->query($sql);
+        $this->db->bind(':klantId', $klantId, PDO::PARAM_INT);
+        $result = $this->db->single();
+        return $result;
+
+        $sql="DELETE FROM Gezin WHERE Gezin.Id = :klantId";
+        $this->db->query($sql);
+        $this->db->bind(':klantId', $klantId, PDO::PARAM_INT);
+        $result = $this->db->single();
+        return $result;
+
+        $sql="DELETE FROM Klant WHERE Klant.Id = :klantId";
+        $this->db->query($sql);
+        $this->db->bind(':klantId', $klantId, PDO::PARAM_INT);
+        $result = $this->db->single();
+        return $result;
+    }
 }
