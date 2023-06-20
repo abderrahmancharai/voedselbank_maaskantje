@@ -1,22 +1,19 @@
-body {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+.bx{
+    color: black;
+    font-size: 50px;
 }
 
-#test {
-  display: none;
+.bx-question-mark{
+    color: blue;
+    font-size: 50px;
 }
-
-.errorForm {
+.bx-x{
     color: red;
-    font-size: 0.7em;
+    font-size: 50px;
 }
-
-table, th, td {
-    border: 2px solid black;
-    border-collapse: collapse;
-    text-align: center;
+body{
+    background-color: whitesmoke;
 }
-
-.remark {
-    color: red;
+.container.container-mvckdemo{
+    background-color:white ;
 }
