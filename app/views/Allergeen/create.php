@@ -16,27 +16,29 @@
             <div class="form-group">
                 <h2 class="form-heading">Create Allergeen</h2>
 
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label" for="klantnaam">Klant Naam</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" name="klantnaam" id="klantnaam">
+                    </div>
+                </div>
+
                 <form action="<?= URLROOT; ?>/allergeen/create" method="post">
                     <div class="form-group row">
-                        <label class="col-sm-3 control-label" for="naam">Naam</label>
+                        <label class="col-sm-3 control-label" for="naam">Allergie</label>
                         <div class="col-sm-9">
                             <input class="form-control" type="text" name="naam" id="naam">
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 control-label" for="omschrijving">Omschrijving</label>
+                        <label class="col-sm-3 control-label" for="omschrijving">Allergie Omschrijving</label>
                         <div class="col-sm-9">
                             <textarea class="form-control" name="omschrijving" id="omschrijving"></textarea>
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-sm-3 control-label" for="klantnaam">Klant Naam</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" type="text" name="klantnaam" id="klantnaam">
-                        </div>
-                    </div>
+
 
                     <!-- <div class="form-group row">
                         <label class="col-sm-3 control-label" for="aantalVolwassen">Aantal Volwassen</label>
