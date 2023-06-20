@@ -43,4 +43,24 @@ class Klant extends Controller
         ];
         $this->view('Klant/index', $data);
     }
+
+    public function update($klantId = 0)
+    {
+
+        $KlantUpdate = $this->KlantModel->KlantUpdatedetails($klantId);
+
+        $data = [
+                'title' => 'Klant wijzigen',
+                'Naam' => $KlantUpdate->Naam,
+                'Plaats' => $KlantUpdate->Plaats,
+                'Telefoonnummer' => $KlantUpdate->Telefoonnummer,
+                'Email' => $KlantUpdate->Email,
+                'AantalVolwassen' => $KlantUpdate->AantalVolwassen,
+                'AantalKinderen' => $KlantUpdate->AantalKinderen,
+                'AantalBaby' => $KlantUpdate->AantalBaby,
+                'GezinId' => $KlantUpdate->GezinId,
+        ];
+
+         $this->view('Klant/update', $data);
+    }
 }
