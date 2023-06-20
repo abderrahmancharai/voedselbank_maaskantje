@@ -34,7 +34,8 @@ class LeverancierModel
             $result = $this->db->resultSet();
             return $result;
 
-        } catch(PDOException $error) {
+        }
+         catch(PDOException $error) {
             echo $error->getMessage();
             throw $error->getMessage();
         }
@@ -42,7 +43,7 @@ class LeverancierModel
     public function update($POST)
     {
 
-        $sql="
+        try{   $sql="
         UPDATE 		leverancier
 
         inner join  productperleverancier on
@@ -66,6 +67,7 @@ class LeverancierModel
                        product.Naam = :product
         WHERE 		leverancier.Id = :leverancierId
        ";
+
         $this->db->query($sql);
         $this->db->bind(':BedrijfsNaam', $POST["BedrijfsNaam"], PDO::PARAM_STR);
         $this->db->bind(':leverancierId', $POST["leverancierId"], PDO::PARAM_STR);
@@ -80,12 +82,15 @@ class LeverancierModel
         $this->db->bind(':product', $POST["product"], PDO::PARAM_STR);
         $result = $this->db->single();
         return $result;
+    }catch(PDOException $error){
+        echo $error->getMessage();
+    }
 
     }
     public function updateleverancierbyid($LeverancierId)
     {
 
-        $sql="
+        try{ $sql="
         select 
         leverancier.id as leverancierId,
             leverancier.BedrijfsNaam,
@@ -113,31 +118,38 @@ class LeverancierModel
         product.Id = productperleverancier.ProductId
         
         where leverancier.Id =:leverancierId";
+  
         $this->db->query($sql);
         $this->db->bind(':leverancierId', $LeverancierId, PDO::PARAM_INT);
         $result = $this->db->single();
         return $result;
+    }catch(PDOException $error){
+        echo $error->getMessage();
+    }
 
     }
 
     public function detailsname($LeverancierId)
     {
 
-        $sql="
+        try{ $sql="
         select leverancier.BedrijfsNaam,
 		leverancier.ContactPersoon
          from leverancier
         where leverancier.Id =:leverancierId";
+   
         $this->db->query($sql);
         $this->db->bind(':leverancierId', $LeverancierId, PDO::PARAM_INT);
         $result = $this->db->single();
         return $result;
-
+    }catch(PDOException $error){
+        echo $error->getMessage();
+    }
     }
     public function detailsleverancierbyid($LeverancierId)
     {
 
-        $sql="
+        try{$sql="
         select leverancier.BedrijfsNaam,
 		leverancier.ContactPersoon,
         leveranciercontact.Email,
@@ -162,11 +174,64 @@ class LeverancierModel
         product.Id = productperleverancier.ProductId
         
         where leverancier.Id =:leverancierId";
+   
+
         $this->db->query($sql);
         $this->db->bind(':leverancierId', $LeverancierId, PDO::PARAM_INT);
         $result = $this->db->resultSet();
         return $result;
-
+    }catch(PDOException $error){
+        echo $error->getMessage();
     }
 
+    }
+    public function toevoegen($POST)
+    {
+        try{ $this->db->query(" INSERT INTO leverancier (BedrijfsNaam, ContactPersoon, IsActive, DatumAangemaakt, Datumgewijzigd) 
+            VALUES (:BedrijfsNaam, :ContactPersoon, 1, SYSDATE(6), SYSDATE(6))");
+
+        $this->db->bind(':BedrijfsNaam', $POST["BedrijfsNaam"], PDO::PARAM_STR);
+        $this->db->bind(':ContactPersoon', $POST["ContactPersoon"], PDO::PARAM_STR);
+        $this->db->execute();
+
+
+
+        $this->db->query("INSERT INTO leveranciercontact (LeverancierId, Email, Mobiel,Straat,Huisnummer,Postcode, IsActive, DatumAangemaakt, Datumgewijzigd) 
+             VALUES (LAST_INSERT_ID(),:Email, :Mobiel, :Straat, :Huisnummer, :Postcode,1, SYSDATE(6), SYSDATE(6))");
+
+        $this->db->bind(':Email', $POST["Email"], PDO::PARAM_STR);
+        $this->db->bind(':Mobiel', $POST["Mobiel"], PDO::PARAM_STR);
+        $this->db->bind(':Straat', $POST["Straat"], PDO::PARAM_STR);
+        $this->db->bind(':Mobiel', $POST["Mobiel"], PDO::PARAM_STR);
+        $this->db->bind(':Huisnummer', $POST["Huisnummer"], PDO::PARAM_INT);
+        $this->db->bind(':Postcode', $POST["Postcode"], PDO::PARAM_STR);
+        $this->db->execute();
+
+
+        $this->db->query("INSERT INTO product (Naam, Barcode, Categorie,  IsActive, DatumAangemaakt, Datumgewijzigd) 
+            VALUES (:product, :Barcode, :Categorie,  1, SYSDATE(6), SYSDATE(6));");
+        $this->db->bind(':Categorie', $POST["Categorie"], PDO::PARAM_STR);
+        $this->db->bind(':Barcode', $POST["Barcode"], PDO::PARAM_STR);
+        $this->db->bind(':product', $POST["product"], PDO::PARAM_STR);
+        $this->db->execute();
+
+
+        $this->db->query("INSERT INTO productperleverancier (LeverancierId, ProductId, DatumLevering, DatumEerstVolgendeLevering, DatumAangemaakt, Datumgewijzigd) 
+            VALUES (LAST_INSERT_ID(), LAST_INSERT_ID(), :DatumLevering, :DatumEerstVolgendeLevering, SYSDATE(6), SYSDATE(6));");
+        $this->db->bind(':DatumLevering', $POST["DatumLevering"], PDO::PARAM_STR);
+        $this->db->bind(':DatumEerstVolgendeLevering', $POST["DatumEerstVolgendeLevering"], PDO::PARAM_STR);
+        return $this->db->execute();
+    }catch(PDOException $error){
+        echo $error->getMessage();
+    }
+    }
+
+   
 }
+
+
+
+
+
+    
+

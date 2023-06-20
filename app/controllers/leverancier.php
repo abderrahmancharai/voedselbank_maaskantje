@@ -114,4 +114,29 @@ public function details($leverancierId)
 
     $this->view('Leverancier/details', $data);
 }
+
+public function toevoegen()
+{
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    var_dump($POST);
+    $update = $this->LeverancierModel->toevoegen($POST);
+
+
+
+} else {
+
+   
+
+
+
+
+
+
+
+    $this->view('Leverancier/toevoegen');
+}
+}
 }
