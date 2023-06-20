@@ -54,10 +54,17 @@ public function updateAllergeen($data)
         $this->db->bind(':klantnaam', $data['klantnaam'], PDO::PARAM_STR);
 
         $this->db->execute();
+
+        if ($this->db->rowCount() > 0) {
+            return true;
+        } else {
+            return false; 
+        }
     } catch (PDOException $e) {
         echo $e->getMessage() . "Rollback";
     }
 }
+
 
 public function createAllergeen($post) {
     try {

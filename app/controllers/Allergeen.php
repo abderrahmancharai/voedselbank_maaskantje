@@ -42,7 +42,6 @@ class Allergeen extends Controller
 
 public function update($allergeenId)
 {
-
     session_start();
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -55,12 +54,15 @@ public function update($allergeenId)
             'klantnaam' => $_POST['klantNaam']
         ];
 
-        $this->allergeenModel->updateAllergeen($data);
-
-        $SESSION['message'] = 'Successful update';
-
-        header("Location: " . URLROOT . "/allergeen/allergeenoverzicht");
-        exit();
+        if (empty($data['naam']) || empty($data['omschrijving']) || empty($data['klantnaam'])) {
+            echo "Vul alle velden in";
+            header("Refresh: 4; URL=" . URLROOT . "/allergeen/allergeenoverzicht");
+        } else {
+            $this->allergeenModel->updateAllergeen($data);
+            $_SESSION['message'] = 'Successful update';
+            header("Refresh: 2; URL=" . URLROOT . "/allergeen/allergeenoverzicht/$allergeenId");
+            echo "de klant is gewijzigd";
+        }
     } else {
         $allergeen = $this->allergeenModel->getSingleAllergeen($allergeenId);
 
@@ -72,9 +74,12 @@ public function update($allergeenId)
 
             $this->view("allergeen/update", $data);
         } else {
+            // Handle the case when the allergeen is not found
         }
     }
 }
+
+
 
 public function delete($allergeenId)
 {
@@ -83,12 +88,8 @@ public function delete($allergeenId)
     if ($deleteStatus) {
       $data = ['deleteStatus' => 'Allergeen is verwijderd'];
 
-    // Set the redirect URL
-    $redirectURL = URLROOT . '/allergeen/allergeenoverzicht';
-
-    // Redirect to the specified URL after 3 seconds
-    header("Refresh: 3; url=" . $redirectURL);
-    exit; // Terminate script execution after redirection
+ header("Refresh: 2; URL=" . URLROOT . "/allergeen/allergeenoverzicht/$allergeenId");
+    echo "Allergeen is verwijderd";
 }
 }
 
@@ -98,25 +99,27 @@ public function create()
         try {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            
             $data = [
                 'naam' => isset($_POST['naam']) ? trim($_POST['naam']) : '',
                 'omschrijving' => isset($_POST['omschrijving']) ? trim($_POST['omschrijving']) : '',
                 'klantnaam' => isset($_POST['klantnaam']) ? trim($_POST['klantnaam']) : ''
             ];
 
-            if ($this->allergeenModel->createAllergeen($data)) {
-                header("Location:" . URLROOT . "/allergeen/allergeenoverzicht");
-                exit; 
+            if (empty($data['naam']) || empty($data['omschrijving']) || empty($data['klantnaam'])) {
+                echo "Vul alle velden in";
+                header("Refresh: 4; URL=" . URLROOT . "/allergeen/allergeenoverzicht");
             } else {
-                echo "Het inserten van het record is niet gelukt";
-                header("Refresh:3; url=" . URLROOT . "/allergeen/allergeenoverzicht");
-                exit; 
+                if ($this->allergeenModel->createAllergeen($data)) {
+                    header("Refresh: 2; URL=" . URLROOT . "/allergeen/allergeenoverzicht");
+                    echo "Allergeen is gemaakt";
+                } else {
+                    echo "Failed to create Allergeen";
+                }
             }
         } catch (PDOException $e) {
             echo "Het inserten van het record is niet gelukt";
-            header("Refresh:3; url=" . URLROOT . "/allergeen/allergeenoverzicht");
-            exit; 
+            header("Refresh: 3; URL=" . URLROOT . "/allergeen/allergeenoverzicht");
+            exit;
         }
     } else {
         $data = [
@@ -126,6 +129,7 @@ public function create()
         $this->view("allergeen/create", $data);
     }
 }
+
 
 
 

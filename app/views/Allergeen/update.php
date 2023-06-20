@@ -4,10 +4,6 @@
     <div class="wrapper-mvckdemo">
         <div class="form-group">
             <h2 class="form-heading">Allergeen Update</h2>
-            <?php if (isset($_SESSION['message'])) : ?>
-            <div class="alert alert-success"><?= $_SESSION['message']; ?></div>
-            <?php unset($_SESSION['message']); ?>
-            <?php endif; ?>
             <form action="<?= URLROOT; ?>/allergeen/update/<?= $data['allergeen']->Id; ?>" method="post">
 
                 <input type="hidden" name="allergeenId" value="<?= $data['allergeen']->Id; ?>">
