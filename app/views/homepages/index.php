@@ -2,7 +2,7 @@
 
 <h1>welkom mederwerker</h1>
 
-<a href="<?=URLROOT;?>/Allergeen/allergeenoverzicht">klanten overzicht</a> |
+<a href="<?=URLROOT;?>/Allergeen/allergeenoverzicht">Allergeen overzicht</a> |
 
 
 <?php require APPROOT . '/views/includes/footer.php'; ?>
