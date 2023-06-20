@@ -114,46 +114,32 @@ public function details($leverancierId)
 
     $this->view('Leverancier/details', $data);
 }
-
 public function toevoegen()
 {
-
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    var_dump($POST);
-    $update = $this->LeverancierModel->toevoegen($POST);
-
-
-
-} else {
-
-   
-
-
-
-
-
-
-
-    $this->view('Leverancier/toevoegen');
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    
+        if (empty($POST["product"])) {
+            echo "Je bent vergeten om iets in te vullen bij product";
+            header("Refresh: 4; URL=" . URLROOT . "/leverancier/index");
+          
+        } else {
+            $update = $this->LeverancierModel->update($POST);
+            echo "Leverancier is geüpdatet";
+            header("Refresh: 4; URL=" . URLROOT . "/leverancier/index");
+        }
+        $toevoegen = $this->LeverancierModel->toevoegen($POST);
+    } else {
+        $this->view('Leverancier/toevoegen');
+    }
 }
-}
+
 
 public function delete($LeverancierId)
 {
-
-
     $delete = $this->LeverancierModel->delete($LeverancierId);
-
-   
-
-
-
-
-
-
-
+    echo "leverancier is verwijderd";
+    header("Refresh: 4; URL=" . URLROOT . "/leverancier/index");
     $this->view('Leverancier/delete');
 }
 }
