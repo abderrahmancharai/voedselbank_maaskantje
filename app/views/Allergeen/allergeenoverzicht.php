@@ -1,5 +1,4 @@
 <?php require APPROOT . '/views/includes/head.php'; ?>
-<a href="<?=URLROOT;?>/allergeen/create">Create Allergeen</a>
 
 <body>
     <h1>Allergeen</h1>
@@ -18,5 +17,8 @@
         </tbody>
     </table>
 </body>
+
+<a href="<?= URLROOT; ?>/allergeen/create" class="btn btn-primary">Create Allergeen</a>
+
 
 </html>
