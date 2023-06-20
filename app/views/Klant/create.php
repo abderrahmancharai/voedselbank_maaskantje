@@ -57,8 +57,6 @@
        
                <a class="btn btn-success" href="<?php URLROOT; ?>/homepages/index/">Home</a>
             </div>
-             
-             
             </div>
          </form>
       </div>

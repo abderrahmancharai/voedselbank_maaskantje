@@ -94,8 +94,8 @@ class Klant extends Controller
             $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             if(empty($POST["naam"])){
-                echo "Vul veld naam in";
                 header("Refresh: 4; URL=" . URLROOT . "/Klant/index");
+                echo "Vul veld naam in";
             }else{
                  $this->KlantModel->createKlant($POST);
                  header("Refresh: 2; URL=" . URLROOT . "/Klant/index");
