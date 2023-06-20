@@ -29,10 +29,10 @@ class Klant extends Controller
                         <td>$items->AantalKinderen</td>
                         <td>$items->AantalBaby</td>
                         <td>
-                            <a href='" . URLROOT . "/Klant/update/$items->klantId'><img src='" . URLROOT . "/img/bx-package.svg' alt='Info'></a>
+                            <a href='" . URLROOT . "/Klant/update/$items->klantId'><img src='" . URLROOT . "/img/bx-edit.svg' alt='Info'></a>
                         </td>
                         <td>
-                            <a href='" . URLROOT . "/Klant/Delete/$items->klantId'><img src='" . URLROOT . "/img/bx-package.svg' alt='Info'></a>
+                            <a href='" . URLROOT . "/Klant/Delete/$items->klantId'><img src='" . URLROOT . "/img/bx-x.svg' alt='Info'></a>
                         </td>
                       </tr>";
         }
