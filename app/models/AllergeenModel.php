@@ -59,6 +59,48 @@ public function updateAllergeen($data)
     }
 }
 
+public function createAllergeen($post) {
+    try {
+$this->db->query("
+    INSERT INTO Gezin (AantalVolwassen, AantalKinderen, AantalBaby, IsActive, Opmerking, DatumAangemaakt, Datumgewijzigd)
+    VALUES (:aantalVolwassen, :aantalKinderen, :aantalBaby, 1, NULL, SYSDATE(6), SYSDATE(6))
+");
+
+$aantalVolwassen = isset($post['aantalVolwassen']) ? $post['aantalVolwassen'] : 0;
+$aantalKinderen = isset($post['aantalKinderen']) ? $post['aantalKinderen'] : 0;
+$aantalBaby = isset($post['aantalBaby']) ? $post['aantalBaby'] : 0;
+
+$this->db->bind(':aantalVolwassen', $aantalVolwassen, PDO::PARAM_INT);
+$this->db->bind(':aantalKinderen', $aantalKinderen, PDO::PARAM_INT);
+$this->db->bind(':aantalBaby', $aantalBaby, PDO::PARAM_INT);
+$this->db->execute();
+
+$this->db->query("
+    INSERT INTO Klant (GezinId, Naam, IsActive, DatumAangemaakt, Datumgewijzigd)
+    VALUES (LAST_INSERT_ID(), :naam, 1, SYSDATE(6), SYSDATE(6))
+");
+
+$this->db->bind(':naam', $post['klantnaam'], PDO::PARAM_STR);
+$this->db->execute();
+
+$this->db->query("
+    INSERT INTO allergeen (KlantId, Naam, Omschrijving, IsActive, DatumAangemaakt, Datumgewijzigd)
+    VALUES (LAST_INSERT_ID(), :naam, :omschrijving, 1, SYSDATE(6), SYSDATE(6))
+");
+
+$this->db->bind(':naam', $post['naam'], PDO::PARAM_STR);
+$this->db->bind(':omschrijving', $post['omschrijving'], PDO::PARAM_STR);
+$this->db->execute();
+
+
+
+        return true;
+    } catch (PDOException $e) {
+        echo "Databasefout: " . $e->getMessage();
+        return false;
+    }
+}
+
 public function delete($allergeenId)
 {
     try {

@@ -92,6 +92,40 @@ public function delete($allergeenId)
 }
 }
 
+public function create()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        try {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            
+            $data = [
+                'naam' => isset($_POST['naam']) ? trim($_POST['naam']) : '',
+                'omschrijving' => isset($_POST['omschrijving']) ? trim($_POST['omschrijving']) : '',
+                'klantnaam' => isset($_POST['klantnaam']) ? trim($_POST['klantnaam']) : ''
+            ];
+
+            if ($this->allergeenModel->createAllergeen($data)) {
+                header("Location:" . URLROOT . "/allergeen/allergeenoverzicht");
+                exit; 
+            } else {
+                echo "Het inserten van het record is niet gelukt";
+                header("Refresh:3; url=" . URLROOT . "/allergeen/allergeenoverzicht");
+                exit; 
+            }
+        } catch (PDOException $e) {
+            echo "Het inserten van het record is niet gelukt";
+            header("Refresh:3; url=" . URLROOT . "/allergeen/allergeenoverzicht");
+            exit; 
+        }
+    } else {
+        $data = [
+            'title' => "Create Allergeen"
+        ];
+
+        $this->view("allergeen/create", $data);
+    }
+}
 
 
 

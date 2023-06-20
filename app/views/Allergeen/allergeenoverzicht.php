@@ -1,5 +1,5 @@
 <?php require APPROOT . '/views/includes/head.php'; ?>
-<a href="<?=URLROOT;?>/allergeen/create">Nieuw score</a>
+<a href="<?=URLROOT;?>/allergeen/create">Create Allergeen</a>
 
 <body>
     <h1>Allergeen</h1>
