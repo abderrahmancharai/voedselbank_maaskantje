@@ -11,13 +11,9 @@
 </head>
 <body>
 
-<h1>welkom mederwerker</h1>
+<h1>Homepage voedselbank maaskantje</h1>
 
-
-<a href="<?=URLROOT;?>/VoedselPakket/index">Klanten Voedselpakket</a> | 
-<a href="<?=URLROOT;?>/leverancier/index">leverancier</a> | 
-<a href="<?=URLROOT;?>/Klant/index">Klant</a> | 
-<a href="<?=URLROOT;?>/Allergeen/allergeenoverzicht">Allergeen</a> |
+<a href="<?=URLROOT;?>/allergieen/index">Overzicht gezinsallergieen</a> |
 
 
 

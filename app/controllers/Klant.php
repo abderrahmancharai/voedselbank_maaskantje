@@ -43,6 +43,7 @@ class Klant extends Controller
         ];
         $this->view('Klant/index', $data);
     }
+    
 
     public function update($klantId = 0)
     {
