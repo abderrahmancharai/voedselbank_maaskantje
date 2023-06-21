@@ -64,7 +64,7 @@
                 Persoon.Voornaam, 
                 Persoon.TypePersoon, 
                 Allergie.Naam,
-                Persoon.Voornaam AS VertegenwoordigerNaam
+                Persoon.IsVertegenwoordiger
                 
             FROM Gezin
             INNER JOIN Persoon ON Gezin.Id = Persoon.GezinId
@@ -95,7 +95,7 @@
         $this->db->query($sql);
         $this->db->bind(':allergienaam', $POST["allergienaam"], PDO::PARAM_STR);
         $this->db->bind(':gezinid', $POST["gezinid"], PDO::PARAM_INT);
-        $result = $this->db->execute();
+        $result = $this->db->single();
         return $result;
     } catch (PDOException $error) {
         echo $error->getMessage();

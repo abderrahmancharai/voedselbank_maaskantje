@@ -14,7 +14,6 @@
             <option value="">Gluten</option>
             <?= $data['dropdown']; ?>
         </select>
-        <input type="submit" value="Filter" class="btn btn-primary">
     </form>
 
     <table class="table">

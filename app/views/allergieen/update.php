@@ -11,7 +11,7 @@
          <input type="hidden" name="GezinId" value="<?= $data["GezinId"];?>"> 
 
             <div class="form-group row">
-               <label class="col-sm-3 control-label">Naam:</label>
+               <label class="col-sm-3 control-label">allergienaam:</label>
                <input type="text" name ="allergienaam" value="<?= $data["allergienaam"];?>"></input>
             </div>
                 
@@ -19,7 +19,7 @@
             
                 <input class="btn btn-warning mr-1 " type="submit" value="sla op"> 
             </a>
-               <a class="btn btn-primary mr-1" href="<?php URLROOT; ?>/allergieen/index/<?= $data["GezinId"];?>">terug</a>
+               <a class="btn btn-primary mr-1" href="<?php URLROOT; ?>/allergieen/allergieendetails/<?= $data["GezinId"];?>">terug</a>
        
                <a class="btn btn-success" href="<?php URLROOT; ?>/homepages/index/">Home</a>
             </div>
