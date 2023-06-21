@@ -28,6 +28,7 @@ class Leverancier extends Controller
 
 
             foreach ($getleverancier as $value) {
+                
     
     
                 $rows .= "<tr>
@@ -63,7 +64,6 @@ class Leverancier extends Controller
 
     $productDetailsByLeverancierId = $this->LeverancierModel->getProductenByLeverancierId($leverancierId);
 
-    $datum = $this->LeverancierModel->getDatumById($productId);
 
 
 
@@ -76,7 +76,7 @@ class Leverancier extends Controller
                         <td>$value->SoortAllergie</td>  
                         <td>$value->Barcode</td>
                         <td>$value->HoudbaarheidsDatum</td>
-                        <td><a href='" . URLROOT . "/Leverancier/update/$value->Id/$value->productId'><i class='bx bx-box'></i></i></a></td>
+                        <td><a href='" . URLROOT . "/Leverancier/update/$value->productId'><i class='bx bx-box'></i></i></a></td>
                         </tr>
                         ";
         }
@@ -92,7 +92,7 @@ class Leverancier extends Controller
 }
 
 
-public function update($leverancierId = NULL, $productId = NULL)
+public function update($productId = NULL)
     { 
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
           var_dump("Ik ben bij update get" );

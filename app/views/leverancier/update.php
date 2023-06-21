@@ -1,37 +1,39 @@
 <?php require APPROOT . '/views/includes/head.php'; ?>
 
 
+<div class="container container-mvckdemo">
+   <div class="wrapper-mvckdemo">
+      <div class="form-group">
+         <h2>wijzigen van Leveranciergegevens</h2>
+         <form action="<?= URLROOT; ?>/VoedselPakket/update" method="post">
 
-<body>
+             
 
-<!-- <h1>geleverde producten</h1>
-<h3>leverancier: <?= $data["leveranciernaam"]; ?></h3>
-<h3>contactpersoon: <?= $data["contactpersoon"]; ?></h3> 
-<h3>telefoonnummer: <?= $data["mobiel"]; ?></h3> -->
+         <input type="hidden" name="productId" value="<?= $data["productId"];?>">
 
+           
+            <div class="form-group row">
+                    <label for="Houdbaarheidsdatum">Datum eerstVolgendel levering</label>
+                    <input type="date" name="houdbaarheidsdatum" id="Houdbaarheidsdatum">
 
+            </div>
+    
 
-<!-- update_product_view.php -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Update Product Houdbaarheidsdatum</title>
-</head>
-<body>
-    <h1>Update Product Houdbaarheidsdatum</h1>
-    <form method="POST" action="<?= URLROOT; ?>/Product/update">
-        <input type="hidden" name="productId" value="<?= $data['productId']; ?>">
-        <label for="Houdbaarheidsdatum">Houdbaarheidsdatum:</label>
-        <input type="date" name="Houdbaarheidsdatum" value="<?= $data['Houdbaarheidsdatum']; ?>">
-        <br>
-        <input type="submit" value="Update">
-    </form>
-</body>
-</html>
-
-
-
-
-
-
-
+     
+       
+                
+            <div class="form-group row">
+            
+                <input class="btn btn-warning mr-1 " type="submit" value="sla op"> 
+            </a>
+               <a class="btn btn-primary mr-1" href="<?php URLROOT; ?>/Leverancier/index">terug</a>
+       
+               <a class="btn btn-success" href="<?php URLROOT; ?>/Leverancier/index/">Home</a>
+            </div>
+             
+             
+            </div>
+         </form>
+      </div>
+   </div>
+</div>

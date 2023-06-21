@@ -95,13 +95,13 @@ class LeverancierModel
                         ,PROD.Barcode
                         ,PROD.HoudbaarheidsDatum
                         
-                        FROM Product AS PROD
+                        FROM Leverancier AS LEVE
                         
                         INNER JOIN ProductPerLeverancier AS PRPL
-                        ON PRPL.ProductId = PROD.Id
+                        ON PRPL.LeverancierId = LEVE.Id
                         
-                        INNER JOIN Leverancier AS LEVE
-                        ON LEVE.Id = PRPL.LeverancierId
+                        INNER JOIN Product AS PROD
+                        ON PROD.Id = PRPL.ProductId
                         
                         WHERE LEVE.Id = :id";
 
@@ -117,17 +117,20 @@ class LeverancierModel
         }
     }
 
+    
+
         public function getDatumById($id)
         {
                 
                 try {
                     $sql="
                             SELECT
-
-                            Houdbaarheidsdatum
-                            
-                            FROM Product
-                            WHERE Product.Id = :id";
+                                    
+                                    Id
+                                ,Houdbaarheidsdatum
+                                    
+                                    FROM Product
+                                    WHERE Product.Id = :id";
     
                     $this->db->query($sql);
                     $this->db->bind(':id', $id, PDO::PARAM_INT);
