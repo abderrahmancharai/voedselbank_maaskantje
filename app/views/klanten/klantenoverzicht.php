@@ -10,6 +10,19 @@
 
 <body>
     <h1>Overzicht Klanten</h1>
+
+    <!-- Add the dropdown menu here -->
+    <form action="<?= URLROOT; ?>/klanten/klantenoverzicht" method="post">
+        <label for="postcode">Selecteer een postcode:</label>
+        <select name="postcode" id="postcode">
+            <option value="">Alle postcodes</option>
+            <?php foreach ($postcodes as $postcode) : ?>
+            <option value="<?= $postcode ?>"><?= $postcode ?></option>
+            <?php endforeach; ?>
+        </select>
+        <input type="submit" value="Filter">
+    </form>
+
     <table border="1">
         <thead>
             <tr>

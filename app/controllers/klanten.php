@@ -17,63 +17,72 @@ class klanten extends Controller
     }
 
 
-public function klantenoverzicht()
-{
-    $klanten = $this->klantenModel->getklant();
-    $rows = '';
-    foreach ($klanten as $value) {
-        $rows .= "<tr>
-            <td>$value->NaamGezin</td>
-            <td>$value->Vertegenwoordiger</td>
-            <td>$value->E_mailadres</td>
-            <td>$value->Mobiel</td>
-            <td>$value->Adres</td>
-            <td>$value->Woonplaats</td>
-                <td><a href='" . URLROOT . "/klanten/update/'><img src='/public/img/bx-edit.svg' alt='Edit' class='icon'></a></td>
-        </tr>";
+    public function klantenoverzicht()
+    {
+        
+        $klanten = $this->klantenModel->getklant();
+        $rows = '';
+        foreach ($klanten as $value) {
+            $rows .= "<tr>
+                <td>$value->NaamGezin</td>
+                <td>$value->Vertegenwoordiger</td>
+                <td>$value->E_mailadres</td>
+                <td>$value->Mobiel</td>
+                <td>$value->Adres</td>
+                <td>$value->Woonplaats</td>
+                <td><a href='" . URLROOT . "/klanten/klantenoverzichtupdate/1'><img src='/public/img/bx-edit.svg' alt='Edit' class='icon'></a></td>
+                </tr>";
+        }
+        $data = [
+            'title' => 'klanten in dienst',
+            'amountOfklanten' => sizeof($klanten),
+            'rows' => $rows
+        ];
+        $this->view('klanten/klantenoverzicht', $data);
     }
-    $data = [
-        'title' => 'klanten in dienst',
-        'amountOfklanten' => sizeof($klanten),
-        'rows' => $rows
-    ];
-    $this->view('klanten/klantenoverzicht', $data);
-}
-}
-
-
-
-//     public function klantenoverzichtupdate()
-//     {
-//         $klanten = $this->klantenModel->getklant();
-//         $rows = '';
-
-//         foreach ($klanten as $value) {
-//             $persoonId  = $value->persoonId;
-//             $rows .= "<tr>
-//                         <td>$value->Voornaam</td>
-//                         <td>$value->Tussenvoegsel</td>
-//                         <td>$value->Achternaam</td>
-//                         <td>$value->mobiel</td>
-//                         <td>$value->Email</td>
-//                         <td>$value->IsVolwassen</td>
-//                         <td><a href='" . URLROOT . "/klanten/update/$persoonId'>update</i></a></td>
-                       
-//                       </tr>";
-//         }
-
-//         $data = [
-//             'title' => 'klanten in dienst',
-//             'amountOfklanten' => sizeof($klanten),
-//             'rows' => $rows
-//         ];
 
 
 
 
-//         $this->view('klanten/klantenoverzichtupdate', $data);
+// public function klantenoverzichtupdate($contactId)
+// {
+//     $klanten = $this->klantenModel->getklantupdate($contactId);
+//     $rows = '';
+
+//     foreach ($klanten as $value) {
+//         $persoonId = $value->Id;  // Assuming the primary key column name is 'Id'
+//         $rows .= "<tr>
+//                     <td>$value->Voornaam</td>
+//                     <td>$value->Tussenvoegsel</td>
+//                     <td>$value->Achternaam</td>
+//                     <td>$value->Geboortedatum</td>
+//                     <td>$value->TypePersoon</td>
+//                     <td>$value->Vertegenwoordiger</td>
+//                     <td>$value->Straatnaam</td>
+//                     <td>$value->Huisnummer</td>
+//                     <td>$value->Toevoeging</td>
+//                     <td>$value->Postcode</td>
+//                     <td>$value->Woonplaats</td>
+//                     <td>$value->Email</td>
+//                     <td>$value->Mobiel</td>
+//                     <td><a href='" . URLROOT . "/klanten/update/$persoonId'>update</a></td>
+//                   </tr>";
 //     }
 
+//     $data = [
+//         'title' => 'klanten in dienst',
+//         'amountOfklanten' => sizeof($klanten),
+//         'rows' => $rows,
+//         'klant' => $klanten
+//     ];
+
+//     $this->view('klanten/klantenoverzichtupdate', $data);
+// }
+
+
+
+
+}
 
 
 

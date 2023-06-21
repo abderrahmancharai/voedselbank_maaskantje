@@ -13,50 +13,58 @@ class klantenModel
 public function getklant()
     {
         $sql = "SELECT
-            Gezin.Naam AS NaamGezin,
-            CONCAT_WS(' ', Persoon.Voornaam, NULLIF(Persoon.Tussenvoegsel, ''), Persoon.Achternaam) AS Vertegenwoordiger,
-            Contact.Email AS E_mailadres,
-            Contact.Mobiel,
-            Contact.Straat AS Adres,
-            Contact.Woonplaats
-        FROM
-            Persoon
-            INNER JOIN Gezin ON Persoon.GezinId = Gezin.Id
-            INNER JOIN ContactPerGezin ON Persoon.GezinId = ContactPerGezin.GezinId
-            INNER JOIN Contact ON ContactPerGezin.ContactId = Contact.Id
-        WHERE
-            Persoon.IsVertegenwoordiger = 1;";
+    Gezin.Naam AS NaamGezin,
+    CONCAT_WS(' ', Persoon.Voornaam, NULLIF(Persoon.Tussenvoegsel, ''), Persoon.Achternaam) AS Vertegenwoordiger,
+    Contact.Email AS E_mailadres,
+    Contact.Mobiel,
+    Contact.Straat AS Adres,
+    Contact.Woonplaats,
+    Contact.Postcode
+FROM
+    Persoon
+    INNER JOIN Gezin ON Persoon.GezinId = Gezin.Id
+    INNER JOIN ContactPerGezin ON Persoon.GezinId = ContactPerGezin.GezinId
+    INNER JOIN Contact ON ContactPerGezin.ContactId = Contact.Id
+WHERE
+    Persoon.IsVertegenwoordiger = 1;
+";
         $this->db->query($sql);
         $result = $this->db->resultSet();
         return $result;
     }
+
+
+// public function getklantupdate($persoonId)
+// {
+//     $sql = "SELECT
+//         p.Voornaam,
+//         p.Tussenvoegsel,
+//         p.Achternaam,
+//         p.Geboortedatum,
+//         p.TypePersoon,
+//         CASE WHEN p.IsVertegenwoordiger = 1 THEN 'Ja' ELSE 'Nee' END AS Vertegenwoordiger,
+//         c.Straat AS Straatnaam,
+//         c.Huisnummer,
+//         c.Toevoeging,
+//         c.Postcode,
+//         c.Woonplaats,
+//         c.Email,
+//         c.Mobiel
+//     FROM
+//         Persoon AS p
+//     INNER JOIN
+//         Contact AS c ON p.Id = c.Id
+//     WHERE
+//         c.Id = 1";
+
+//     $this->db->query($sql);
+//     $this->db->bind(':contactId', $contactId);
+//     $result = $this->db->resultSet();
+//     return $result;
+// }
+
+
 }
-
-  // public function getklantupdate()
-  // {
-  //   $sql = "select 
-	//             typepersoon.Id as  typepersoonId
-  //               ,persoon.Id    as  persoonId 
-  //               ,contact.Id    as  contactId 
-  //               ,persoon.Voornaam
-  //               ,persoon.Tussenvoegsel
-  //               ,persoon.Achternaam
-  //               ,persoon.IsVolwassen
-  //               ,contact.mobiel
-  //               ,contact.Email
-  //               from typepersoon
-    
-  //               inner join  persoon on
-  //               TypePersoonId = typepersoon.Id
-    
-  //                inner join contact on
-  //               contact.PersoonId = persoon.Id";
-  //   $this->db->query($sql);
-  //   $result = $this->db->resultSet();
-  //   return $result;
-  // }
-
-
 
   // public function getklantbyid($persoonId)
   // {
