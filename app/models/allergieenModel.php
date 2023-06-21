@@ -18,7 +18,7 @@
                                 Gezin.AantalVolwassenen,
                                 Gezin.AantalKinderen,
                                 Gezin.AantalBabys,
-                                Persoon.Voornaam AS VertegenwoordigerNaam
+                                CONCAT_WS(' ', Persoon.Voornaam, NULLIF(Persoon.Tussenvoegsel, ''), Persoon.Achternaam) AS VertegenwoordigerNaam 
                         FROM Gezin
                         INNER JOIN Persoon 
                         ON Gezin.Id = Persoon.GezinId
@@ -41,21 +41,20 @@
     try {
         $sql = "SELECT Gezin.id,
                        Gezin.Naam AS Gezinsnaam,
-                       Gezin.Omschrijving,
+                       Gezin.Omschrijving AS omschrijving,
                        Gezin.TotaalAantalPersonen
                 FROM Gezin
                 WHERE Gezin.Id = :gezinid";
 
         $this->db->query($sql);
         $this->db->bind(':gezinid', $GezinId, PDO::PARAM_INT);
-        $result = $this->db->resultSet();
+        $result = $this->db->single();
         return $result;
     } catch (PDOException $error) {
         echo $error->getMessage();
         throw $error;
     }
-}
-
+       }
 
         public function allergieendetails($GezinId)
     {
@@ -64,8 +63,9 @@
             $sql = "SELECT 
                 Persoon.Voornaam, 
                 Persoon.TypePersoon, 
-                Persoon.IsVertegenwoordiger,
-                Allergie.Naam
+                Allergie.Naam,
+                Persoon.Voornaam AS VertegenwoordigerNaam
+                
             FROM Gezin
             INNER JOIN Persoon ON Gezin.Id = Persoon.GezinId
             LEFT JOIN AllergiePerPersoon ON Persoon.Id = AllergiePerPersoon.PersoonId
@@ -81,4 +81,28 @@
             throw $error;
         }
     }
+
+     public function update($POST)
+{
+    try {
+        $sql = "UPDATE AllergiePerPersoon
+                INNER JOIN Persoon ON Persoon.Id = AllergiePerPersoon.PersoonId
+                INNER JOIN Gezin ON Gezin.Id = Persoon.GezinId
+                INNER JOIN Allergie ON Allergie.Id = AllergiePerPersoon.AllergieId
+                SET Allergie.Naam = :allergienaam
+                WHERE Gezin.Id = :gezinid";
+
+        $this->db->query($sql);
+        $this->db->bind(':allergienaam', $POST["allergienaam"], PDO::PARAM_STR);
+        $this->db->bind(':gezinid', $POST["gezinid"], PDO::PARAM_INT);
+        $result = $this->db->execute();
+        return $result;
+    } catch (PDOException $error) {
+        echo $error->getMessage();
+        throw $error;
+    }
+}
+
+
+     
     }
