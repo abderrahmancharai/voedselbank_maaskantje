@@ -31,38 +31,63 @@ WHERE
         $this->db->query($sql);
         $result = $this->db->resultSet();
         return $result;
-    }
+}
 
 
-// public function getklantupdate($persoonId)
-// {
-//     $sql = "SELECT
-//         p.Voornaam,
-//         p.Tussenvoegsel,
-//         p.Achternaam,
-//         p.Geboortedatum,
-//         p.TypePersoon,
-//         CASE WHEN p.IsVertegenwoordiger = 1 THEN 'Ja' ELSE 'Nee' END AS Vertegenwoordiger,
-//         c.Straat AS Straatnaam,
-//         c.Huisnummer,
-//         c.Toevoeging,
-//         c.Postcode,
-//         c.Woonplaats,
-//         c.Email,
-//         c.Mobiel
-//     FROM
-//         Persoon AS p
-//     INNER JOIN
-//         Contact AS c ON p.Id = c.Id
-//     WHERE
-//         c.Id = 1";
+public function getklantoverzicht()
+{
+    $sql = "SELECT
+        p.Voornaam,
+        p.Tussenvoegsel,
+        p.Achternaam,
+        p.Geboortedatum,
+        p.TypePersoon,
+        CASE WHEN p.IsVertegenwoordiger = 1 THEN 'Ja' ELSE 'Nee' END AS Vertegenwoordiger,
+        c.Straat AS Straatnaam,
+        c.Huisnummer,
+        c.Toevoeging,
+        c.Postcode,
+        c.Woonplaats,
+        c.Email,
+        c.Mobiel
+    FROM
+        Persoon AS p
+    INNER JOIN
+        Contact AS c ON p.Id = c.Id";
 
-//     $this->db->query($sql);
-//     $this->db->bind(':contactId', $contactId);
-//     $result = $this->db->resultSet();
-//     return $result;
-// }
+    $this->db->query($sql);
+    $result = $this->db->resultSet();
+    return $result;
+}
 
+public function getklantoverzichtbyid($contactId)
+{
+    $sql = "SELECT
+        p.Voornaam,
+        p.Tussenvoegsel,
+        p.Achternaam,
+        p.Geboortedatum,
+        p.TypePersoon,
+        CASE WHEN p.IsVertegenwoordiger = 1 THEN 'Ja' ELSE 'Nee' END AS Vertegenwoordiger,
+        c.Straat AS Straatnaam,
+        c.Huisnummer,
+        c.Toevoeging,
+        c.Postcode,
+        c.Woonplaats,
+        c.Email,
+        c.Mobiel
+    FROM
+        Persoon AS p
+    INNER JOIN
+        Contact AS c ON p.Id = c.Id
+    WHERE
+        c.Id = :contactId";
+
+    $this->db->query($sql);
+    $this->db->bind(':contactId', $contactId);
+    $result = $this->db->resultSet();
+    return $result;
+}
 
 }
 

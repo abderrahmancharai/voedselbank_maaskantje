@@ -17,31 +17,77 @@ class klanten extends Controller
     }
 
 
-    public function klantenoverzicht()
-    {
-        
-        $klanten = $this->klantenModel->getklant();
-        $rows = '';
-        foreach ($klanten as $value) {
-            $rows .= "<tr>
-                <td>$value->NaamGezin</td>
-                <td>$value->Vertegenwoordiger</td>
-                <td>$value->E_mailadres</td>
-                <td>$value->Mobiel</td>
-                <td>$value->Adres</td>
-                <td>$value->Woonplaats</td>
-                <td><a href='" . URLROOT . "/klanten/klantenoverzichtupdate/1'><img src='/public/img/bx-edit.svg' alt='Edit' class='icon'></a></td>
-                </tr>";
-        }
-        $data = [
-            'title' => 'klanten in dienst',
-            'amountOfklanten' => sizeof($klanten),
-            'rows' => $rows
-        ];
-        $this->view('klanten/klantenoverzicht', $data);
+public function klantenoverzicht()
+{
+    $klanten = $this->klantenModel->getklant();
+    $rows = '';
+
+    foreach ($klanten as $value) {
+    $persoonId = isset($value->Id) ? $value->Id : '';
+    $rows .= "<tr>
+        <td>$value->NaamGezin</td>
+        <td>$value->Vertegenwoordiger</td>
+        <td>$value->E_mailadres</td>
+        <td>$value->Mobiel</td>
+        <td>$value->Adres</td>
+        <td>$value->Woonplaats</td>
+        <td><a href='" . URLROOT . "/klanten/klantenoverzichtupdate/$value->Id'><img src='/public/img/bx-edit.svg' alt='Edit' class='icon'></a></td>
+
+        </tr>";
     }
 
+    $data = [
+        'title' => 'klanten in dienst',
+        'amountOfklanten' => sizeof($klanten),
+        'rows' => $rows
+    ];
+    $this->view('klanten/klantenoverzicht', $data);
+}
 
+
+public function klantenoverzichtupdate($contactId = null)
+{  
+    if ($contactId) {
+        $klanten = $this->klantenModel->getklantoverzichtbyid($contactId); // Retrieve details of a specific contact by ID
+        $title = 'Klant Overzicht Update - ID: ' . $contactId;
+    } else {
+        $klanten = $this->klantenModel->getklantoverzicht();
+        $title = 'Klant Overzicht Update';
+    }
+
+    $rows = '';
+
+    foreach ($klanten as $value) {
+        // Display the details of the specific contact
+        $rows .= "<tr>
+            <td>$value->Voornaam</td>
+            <td>$value->Tussenvoegsel</td>
+            <td>$value->Achternaam</td>
+            <td>$value->Geboortedatum</td>
+            <td>$value->TypePersoon</td>
+            <td>$value->Vertegenwoordiger</td>
+            <td>$value->Straatnaam</td>
+            <td>$value->Huisnummer</td>
+            <td>$value->Toevoeging</td>
+            <td>$value->Postcode</td>
+            <td>$value->Woonplaats</td>
+            <td>$value->Email</td>
+            <td>$value->Mobiel</td>
+            <td><a href='" . URLROOT . "/klanten/update/$contactId'>Update</a></td>
+        </tr>";
+    }
+
+    $data = [
+        'title' => $title,
+        'amountOfklanten' => sizeof($klanten),
+        'rows' => $rows,
+        'klant' => $klanten
+    ];
+
+    $this->view('klanten/klantenoverzichtupdate', $data);
+}
+
+}
 
 
 // public function klantenoverzichtupdate($contactId)
@@ -65,7 +111,7 @@ class klanten extends Controller
 //                     <td>$value->Woonplaats</td>
 //                     <td>$value->Email</td>
 //                     <td>$value->Mobiel</td>
-//                     <td><a href='" . URLROOT . "/klanten/update/$persoonId'>update</a></td>
+//                     <td><a href='" . URLROOT . "/klanten/update/'>update</a></td>
 //                   </tr>";
 //     }
 
@@ -80,9 +126,6 @@ class klanten extends Controller
 // }
 
 
-
-
-}
 
 
 
@@ -120,17 +163,17 @@ class klanten extends Controller
 
 
 
-        // if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        //     $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        //     $this->klantenModel->update($_POST);
-        //     echo "update succesvol";
-        //     header("Refresh: 1; URL=" . URLROOT . "/klanten/klantenoverzichtupdate");
-        // } else {
-        //     $klant = $this->klantenModel->getklantbyid($persoonId);
+//         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+//             $this->klantenModel->update($_POST);
+//             echo "update succesvol";
+//             header("Refresh: 1; URL=" . URLROOT . "/klanten/klantenoverzichtupdate");
+//         } else {
+//             $klant = $this->klantenModel->getklantbyid($persoonId);
 
-        //     $data = [
-        //         'title' => '<h1>Update contactgegevens</h1>',
-        //         'klant' => $klant[0]
-        //     ];
-        //     $this->view("klanten/update", $data);
-        // }
+//             $data = [
+//                 'title' => '<h1>Update contactgegevens</h1>',
+//                 'klant' => $klant[0]
+//             ];
+//             $this->view("klanten/update", $data);
+//         }
