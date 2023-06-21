@@ -127,7 +127,7 @@ class LeverancierModel
                             SELECT
                                     
                                     Id
-                                ,Houdbaarheidsdatum
+                                   ,Houdbaarheidsdatum
                                     
                                     FROM Product
                                     WHERE Product.Id = :id";
@@ -157,7 +157,7 @@ class LeverancierModel
                                    
                            
 
-                $this->db->bind(':houdbaarheidsDatum', $POST['houdbaarheidsDatum'], PDO::PARAM_INT);
+                $this->db->bind(':houdbaarheidsDatum', $POST['Houdbaarheidsdatum'], PDO::PARAM_INT);
                 $this->db->bind(':productId', $POST['productId'], PDO::PARAM_INT);        
     }
 

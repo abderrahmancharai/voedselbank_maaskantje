@@ -5,7 +5,7 @@
    <div class="wrapper-mvckdemo">
       <div class="form-group">
          <h2>wijzigen van Leveranciergegevens</h2>
-         <form action="<?= URLROOT; ?>/VoedselPakket/update" method="post">
+         <form action="<?= URLROOT; ?>/Leverancier/update" method="post">
 
              
 

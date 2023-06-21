@@ -94,42 +94,37 @@ class Leverancier extends Controller
 
 public function update($productId = NULL)
     { 
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-          var_dump("Ik ben bij update get" );
+      
+         
+         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+         
+            $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-          $product = $this->LeverancierModel->getProductenByLeverancierId($productId);
+            // if(empty($POST["Houdbaarheidsdatum"])){
+            //     header("Refresh: 4; URL=" . URLROOT . "/Klant/index");
+            //     echo "Vul veld naam in";
+            // }else{
+            //       $this->LeverancierModel->update($POST);
+            //      header("Refresh: 2; URL=" . URLROOT . "/Klant/index");
+            //         echo "Datum is gewijzigd";
+            //      }
+         }else {
 
-          var_dump($product);
+                  $datum = $this->LeverancierModel->getDatumById($productId);
 
+                  $result = $this->LeverancierModel->update($_POST);  
 
-
+          var_dump($datum);
 
           $data = [
-                    // 'leveranciernaam' => $contactGegevens->Naam,
-                    // 'contactpersoon' => $contactGegevens->ContactPersoon,
-                    // 'leveranciernummer' => $contactGegevens->LeverancierNummer,
-                    // 'mobiel' => $contactGegevens->Mobiel,
-                    'leverancierId' => $leverancierId,
-                    'productId' => $productId,
-              
+
+                    'productId' => $productId,     
+                    'Houdbaarheidsdatum' => $datum->Houdbaarheidsdatum      
                   ];
 
 
             $this->view('/Leverancier/update', $data);
-        } else {
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            // var_dump("Ik ben bij update");
-            // var_dump($leverancierId);
-            //exit();
-            // var_dump($_POST);
-
- 
-
-            $result = $this->LeverancierModel->update($_POST);  
-
-            header('Location: ' . URLROOT . '/Leverancier/details/' . $_POST['productId']);
-            
-        }
+    }
     }
 
 
