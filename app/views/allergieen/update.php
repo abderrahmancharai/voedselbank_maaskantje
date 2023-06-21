@@ -4,14 +4,14 @@
 <div class="container container-mvckdemo">
    <div class="wrapper-mvckdemo">
       <div class="form-group">
-         <h2>wijzigen van Klant</h2>
+         <h2>wijzigen Allergie</h2>
          <form action="<?= URLROOT; ?>/allergieen/update" method="post">
 
            
          <input type="hidden" name="GezinId" value="<?= $data["GezinId"];?>"> 
 
             <div class="form-group row">
-               <label class="col-sm-3 control-label">allergienaam:</label>
+               <label class="col-sm-3 control-label">Allergie:</label>
                <input type="text" name ="allergienaam" value="<?= $data["allergienaam"];?>"></input>
             </div>
                 
