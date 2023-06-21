@@ -14,22 +14,26 @@ class LeverancierModel
 
         try {
             $sql="
-        select
-        leverancier.Id as leverancierId,
-             leverancier.BedrijfsNaam,
-		leverancier.ContactPersoon,
-         product.naam,
-        leverancier.aantal,
-        productperleverancier.DatumLevering
-       
-        
-        from leverancier
-        
-        inner join  productperleverancier on
-        Leverancier.Id = productperleverancier.LeverancierId
-        
-         inner join  product on
-        product.Id = productperleverancier.ProductId";
+
+                    SELECT  
+                   
+                             LEVE.Id
+                            ,LEVE.Naam
+                            ,LEVE.ContactPersoon
+                            ,LEVE.LeverancierNummer
+                            ,LEVE.LeverancierType
+                            ,CON.Email
+                            ,CON.Mobiel
+
+                            FROM Leverancier AS LEVE
+
+                            INNER JOIN ContactPerLeverancier AS COPLE
+                            ON COPLE.LeverancierId = LEVE.Id
+
+                            INNER JOIN Contact AS CON
+                            ON CON.Id = COPLE.ContactId;
+                             ";
+
             $this->db->query($sql);
             $result = $this->db->resultSet();
             return $result;
@@ -40,53 +44,147 @@ class LeverancierModel
             throw $error->getMessage();
         }
     }
-    public function update($POST)
+
+    public function getLeverancierById($productId)
     {
 
-        try{   $sql="
-        UPDATE 		leverancier
+        try {
+            $sql="
 
-        inner join  productperleverancier on
-                Leverancier.Id = productperleverancier.LeverancierId
+                 SELECT
                 
-                  inner join  leveranciercontact on
-                Leverancier.Id = leveranciercontact.LeverancierId
-                
-                 inner join  product on
-                product.Id = productperleverancier.ProductId
-                
-        SET		 	leverancier.BedrijfsNaam = :BedrijfsNaam,
-                leverancier.ContactPersoon = :ContactPersoon,
-                leveranciercontact.Email =:Email,
-                  leveranciercontact.Mobiel = :Mobiel,
-                          leveranciercontact.Straat = :Straat,
-                            leveranciercontact.Huisnummer = :Huisnummer,
-                       leveranciercontact.Postcode =:Postcode,
-                        productperleverancier.DatumLevering =:DatumLevering,
-                       productperleverancier.DatumEerstVolgendeLevering =:DatumEerstVolgendeLevering,
-                       product.Naam = :product
-        WHERE 		leverancier.Id = :leverancierId
-       ";
+                                         LEVE.Id
+                                        ,LEVE.Naam 
+                                        ,LEVE.ContactPersoon 
+                                        ,LEVE.LeverancierNummer 
+                                       
 
-        $this->db->query($sql);
-        $this->db->bind(':BedrijfsNaam', $POST["BedrijfsNaam"], PDO::PARAM_STR);
-        $this->db->bind(':leverancierId', $POST["leverancierId"], PDO::PARAM_STR);
-        $this->db->bind(':ContactPersoon', $POST["ContactPersoon"], PDO::PARAM_STR);
-        $this->db->bind(':Email', $POST["Email"], PDO::PARAM_STR);
-        $this->db->bind(':Mobiel', $POST["Mobiel"], PDO::PARAM_STR);
-        $this->db->bind(':Straat', $POST["Straat"], PDO::PARAM_STR);
-        $this->db->bind(':Huisnummer', $POST["Huisnummer"], PDO::PARAM_STR);
-        $this->db->bind(':Postcode', $POST["Postcode"], PDO::PARAM_STR);
-        $this->db->bind(':DatumLevering', $POST["DatumLevering"], PDO::PARAM_STR);
-        $this->db->bind(':DatumEerstVolgendeLevering', $POST["DatumEerstVolgendeLevering"], PDO::PARAM_STR);
-        $this->db->bind(':product', $POST["product"], PDO::PARAM_STR);
-        $result = $this->db->single();
-        return $result;
-    }catch(PDOException $error){
-        echo $error->getMessage();
+                                FROM       Leverancier AS LEVE
+
+                                INNER JOIN ProductPerLeverancier AS PRPL 
+                                ON PRPL.LeverancierId = LEVE.Id
+
+                                INNER JOIN Product AS PROD
+                                ON PROD.Id = PRPL.ProductId
+                                WHERE PROD.Id = :id";
+
+            $this->db->query($sql);
+            $this->db->bind(':id', $productId);
+            $result = $this->db->resultSet();
+            return $result;
+
+        }
+         catch(PDOException $error) {
+            echo $error->getMessage();
+            throw $error->getMessage();
+        }
     }
 
+    public function getProductenByLeverancierId($id)
+    {
+
+        try {
+            $sql="
+
+                    SELECT  
+
+                         LEVE.Id
+                        ,PROD.Id
+                        ,PROD.Naam
+                        ,PROD.SoortAllergie
+                        ,PROD.Barcode
+                        ,PROD.HoudbaarheidsDatum
+                        
+                        FROM Product AS PROD
+                        
+                        INNER JOIN ProductPerLeverancier AS PRPL
+                        ON PRPL.ProductId = PROD.Id
+                        
+                        INNER JOIN Leverancier AS LEVE
+                        ON LEVE.Id = PRPL.LeverancierId
+                        
+                        WHERE LEVE.Id = :id";
+
+            $this->db->query($sql);
+            $this->db->bind(':id', $id, PDO::PARAM_INT);
+            $result = $this->db->resultSet();
+            return $result;
+
+        }
+         catch(PDOException $error) {
+            echo $error->getMessage();
+            throw $error->getMessage();
+        }
+        
+
     }
+
+    public function update($POST)
+    {
+         $sql = "UPDATE Product
+                 SET Houdbaarheidsdatum = 'houdbaarheidsDatum'
+                 WHERE Id = :productId";
+ 
+
+                $this->db->query($sql);
+                                   
+                           
+
+                $this->db->bind(':houdbaarheidsDatum', $POST['houdbaarheidsDatum'], PDO::PARAM_INT);
+                $this->db->bind(':productId', $POST['productId'], PDO::PARAM_INT);        
+    }
+
+
+
+
+
+    // public function update($POST)
+    // {
+
+    //     try{   $sql="
+    //     UPDATE 		leverancier
+
+    //     inner join  productperleverancier on
+    //             Leverancier.Id = productperleverancier.LeverancierId
+                
+    //               inner join  leveranciercontact on
+    //             Leverancier.Id = leveranciercontact.LeverancierId
+                
+    //              inner join  product on
+    //             product.Id = productperleverancier.ProductId
+                
+    //     SET		 	leverancier.BedrijfsNaam = :BedrijfsNaam,
+    //             leverancier.ContactPersoon = :ContactPersoon,
+    //             leveranciercontact.Email =:Email,
+    //               leveranciercontact.Mobiel = :Mobiel,
+    //                       leveranciercontact.Straat = :Straat,
+    //                         leveranciercontact.Huisnummer = :Huisnummer,
+    //                    leveranciercontact.Postcode =:Postcode,
+    //                     productperleverancier.DatumLevering =:DatumLevering,
+    //                    productperleverancier.DatumEerstVolgendeLevering =:DatumEerstVolgendeLevering,
+    //                    product.Naam = :product
+    //     WHERE 		leverancier.Id = :leverancierId
+    //    ";
+
+    //     $this->db->query($sql);
+    //     $this->db->bind(':BedrijfsNaam', $POST["BedrijfsNaam"], PDO::PARAM_STR);
+    //     $this->db->bind(':leverancierId', $POST["leverancierId"], PDO::PARAM_STR);
+    //     $this->db->bind(':ContactPersoon', $POST["ContactPersoon"], PDO::PARAM_STR);
+    //     $this->db->bind(':Email', $POST["Email"], PDO::PARAM_STR);
+    //     $this->db->bind(':Mobiel', $POST["Mobiel"], PDO::PARAM_STR);
+    //     $this->db->bind(':Straat', $POST["Straat"], PDO::PARAM_STR);
+    //     $this->db->bind(':Huisnummer', $POST["Huisnummer"], PDO::PARAM_STR);
+    //     $this->db->bind(':Postcode', $POST["Postcode"], PDO::PARAM_STR);
+    //     $this->db->bind(':DatumLevering', $POST["DatumLevering"], PDO::PARAM_STR);
+    //     $this->db->bind(':DatumEerstVolgendeLevering', $POST["DatumEerstVolgendeLevering"], PDO::PARAM_STR);
+    //     $this->db->bind(':product', $POST["product"], PDO::PARAM_STR);
+    //     $result = $this->db->single();
+    //     return $result;
+    // }catch(PDOException $error){
+    //     echo $error->getMessage();
+    // }
+
+    // }
     public function updateleverancierbyid($LeverancierId)
     {
 
@@ -235,6 +333,8 @@ class LeverancierModel
         return $result;
        
     }
+
+    
     
 
    

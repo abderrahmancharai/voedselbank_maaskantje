@@ -2,7 +2,7 @@
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-define('DB_NAME', 'Voedselbank_Maaskantje');
+define('DB_NAME', 'Eindexamendag3');
 
 define('APPROOT', dirname(dirname(__FILE__))) ;
 
