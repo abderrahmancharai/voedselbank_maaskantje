@@ -11,32 +11,24 @@
 
 
 
-<form action="<?= URLROOT; ?>/Leverancier/update" method="post">
-   
-    <table>
-        <tbody>
-          
-            <tr>
-                <td>
-                    <label for="DatumEerstVolgendeLevering">Datum eerstVolgendel levering</label>
-                    <input type="date" name="datumEerstVolgendeLevering" id="DatumEerstVolgendeLevering">
-                </td>
-            </tr>
-            <td>
-          <input type="hidden" name="productId" value="<?= $data["productId"];?>">
-          <input type="hidden" name="leverancierId" value="<?= $data["leverancierId"];?>">
-        </td>
-            <tr>
-                <td>
-                    <input type="submit" value="Verzenden">
-                </td>
-            </tr>
-
-            <?php var_dump($data["productId"]);?>
-        </tbody>
-    </table>
-</form>
+<!-- update_product_view.php -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Product Houdbaarheidsdatum</title>
+</head>
+<body>
+    <h1>Update Product Houdbaarheidsdatum</h1>
+    <form method="POST" action="<?= URLROOT; ?>/Product/update">
+        <input type="hidden" name="productId" value="<?= $data['productId']; ?>">
+        <label for="Houdbaarheidsdatum">Houdbaarheidsdatum:</label>
+        <input type="date" name="Houdbaarheidsdatum" value="<?= $data['Houdbaarheidsdatum']; ?>">
+        <br>
+        <input type="submit" value="Update">
+    </form>
 </body>
+</html>
+
 
 
 

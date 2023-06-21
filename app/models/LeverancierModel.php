@@ -89,7 +89,7 @@ class LeverancierModel
                     SELECT  
 
                          LEVE.Id
-                        ,PROD.Id
+                        ,PROD.Id AS productId
                         ,PROD.Naam
                         ,PROD.SoortAllergie
                         ,PROD.Barcode
@@ -115,6 +115,30 @@ class LeverancierModel
             echo $error->getMessage();
             throw $error->getMessage();
         }
+    }
+
+        public function getDatumById($id)
+        {
+                
+                try {
+                    $sql="
+                            SELECT
+
+                            Houdbaarheidsdatum
+                            
+                            FROM Product
+                            WHERE Product.Id = :id";
+    
+                    $this->db->query($sql);
+                    $this->db->bind(':id', $id, PDO::PARAM_INT);
+                    $result = $this->db->resultSet();
+                    return $result;
+    
+                }
+                catch(PDOException $error) {
+                    echo $error->getMessage();
+                    throw $error->getMessage();
+        }
         
 
     }
@@ -122,7 +146,7 @@ class LeverancierModel
     public function update($POST)
     {
          $sql = "UPDATE Product
-                 SET Houdbaarheidsdatum = 'houdbaarheidsDatum'
+                 SET Houdbaarheidsdatum = :houdbaarheidsDatum
                  WHERE Id = :productId";
  
 

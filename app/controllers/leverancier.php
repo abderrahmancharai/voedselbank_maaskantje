@@ -59,9 +59,12 @@ class Leverancier extends Controller
 
 
     public function details($leverancierId)
-{
+        {
 
     $productDetailsByLeverancierId = $this->LeverancierModel->getProductenByLeverancierId($leverancierId);
+
+    $datum = $this->LeverancierModel->getDatumById($productId);
+
 
 
   
@@ -73,14 +76,15 @@ class Leverancier extends Controller
                         <td>$value->SoortAllergie</td>  
                         <td>$value->Barcode</td>
                         <td>$value->HoudbaarheidsDatum</td>
-                        <td><a href='" . URLROOT . "/Leverancier/update/$value->Id'><i class='bx bx-box'></i></i></a></td>
+                        <td><a href='" . URLROOT . "/Leverancier/update/$value->Id/$value->productId'><i class='bx bx-box'></i></i></a></td>
                         </tr>
                         ";
         }
 
         $data = [
 
-            'rows' => $rows
+            'rows' => $rows,
+
         ];
    
 
@@ -93,7 +97,11 @@ public function update($leverancierId = NULL, $productId = NULL)
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
           var_dump("Ik ben bij update get" );
 
-        //   $contactGegevens = $this->LeverancierModel->getLeverancierGegevensById($productId);
+          $product = $this->LeverancierModel->getProductenByLeverancierId($productId);
+
+          var_dump($product);
+
+
 
 
           $data = [
@@ -102,7 +110,8 @@ public function update($leverancierId = NULL, $productId = NULL)
                     // 'leveranciernummer' => $contactGegevens->LeverancierNummer,
                     // 'mobiel' => $contactGegevens->Mobiel,
                     'leverancierId' => $leverancierId,
-                    'productId' => $productId
+                    'productId' => $productId,
+              
                   ];
 
 
@@ -118,7 +127,7 @@ public function update($leverancierId = NULL, $productId = NULL)
 
             $result = $this->LeverancierModel->update($_POST);  
 
-            header('Location: ' . URLROOT . '/Leverancier/details/' . $_POST['leverancierId']);
+            header('Location: ' . URLROOT . '/Leverancier/details/' . $_POST['productId']);
             
         }
     }
