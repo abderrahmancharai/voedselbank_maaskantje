@@ -2,6 +2,10 @@
 <body>
 <p><h3><?= $data["title"]; ?></h3></p>
 
+    <h4> Gezinsnaam: <?= $data['Gezinsnaam']; ?></h4>
+    <h4> Omschrijving: <?= $data['omschrijving']; ?></h4>
+    <h4> Totaal aantal Personen: <?= $data['totaal']; ?></h4>
+
     <table class="table">
   <thead class="thead-dark">
     <tr>

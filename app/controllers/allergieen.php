@@ -13,6 +13,8 @@
 
         public function index()
         {
+            
+
             $allergieenen = $this->allergieenModel->getallergieen();
 
             $rows = '';
@@ -41,6 +43,8 @@
 
         public function allergieendetails($GezinId)
         {
+            $allergeenen = $this->allergieenModel->getAllergeenById($GezinId);
+
             $allergieDetail = $this->allergieenModel->allergieendetails($GezinId);
 
             $rows = '';
@@ -53,14 +57,18 @@
                             <td>$items->IsVertegenwoordiger</td>
                             <td>$items->Naam</td>
                             <td>
-                                <a href='" . URLROOT . "/allergieen/allergieendetails/$items->AllergieId'><img src='" . URLROOT . "/img/bx-edit.svg' alt='Info'></a>
+                                <a href='" . URLROOT . "/allergieen/allergieenupdate/$items->GezinId'><img src='" . URLROOT . "/img/bx-edit.svg' alt='Info'></a>
                             </td>
                         </tr>";
             }
 
             $data = [
                 'title' => "<h2>Overzicht gezinnen met allergieen</h2>",
-                'rows' => $rows
+                'rows' => $rows,
+                'Gezinsnaam' =>$allergeenen->Gezinsnaam,
+                'omschrijving' =>$allergeenen->omschrijving,
+                'totaal' =>$allergeenen->TotaalAantalPersonen
+
             ];
             $this->view('allergieen/allergieendetails', $data);
         }
