@@ -1,6 +1,6 @@
 <?php
 
-Class VoedselPakketModel
+class VoedselPakketModel
 {
     // Properties, fields
     private $db;
@@ -11,170 +11,151 @@ Class VoedselPakketModel
         $this->db = new Database();
     }
 
-   public function getPaketten()
-    {
-        try{
-            $sql =  "SELECT 
-            Klant.naam,
-            pakket.Id as pakketId,
-            Klant.Id as KlantId,
-            Klant.Naam,
-            Gezin.AantalVolwassen,
-            Gezin.AantalKinderen,
-            Gezin.AantalBaby
-            FROM
-            Gezin
-            INNER JOIN Klant ON Gezin.Id = Klant.GezinId
-            INNER JOIN Pakket ON KlantId = Klant.Id
-            group by  klant.Id";
-
-        
-        $this->db->query($sql);
-        $result = $this->db->resultSet();
-        return $result;}
-
-        catch(PDOException $error){
-
-         echo $error->getMessage();
-        }
-    }
-
-    public function getPakketById($id)
+    public function getgezin()
     {
 
-        try{
-        $sql =  "SELECT 
-                         PAK.Id AS PakketId
-                        ,KLANT.Id AS KlantId
-                        ,KLANT.Naam AS KlantNaam 
-                        ,PROD.Categorie
-                        ,PAK.Aantal
-                        ,PROD.Naam
-                        ,PROD.id as productId
-                    
-                    FROM Pakket AS PAK
-                    INNER JOIN Product AS PROD
-                    ON PAK.ProductId = PROD.Id
-                    
-                    INNER JOIN Klant AS KLANT
-                    ON KLANT.Id = PAK.KlantId
-                    WHERE  KLANT.Id = :id";
-
-                    $this->db->query($sql);
-        $this->db->bind(':id', $id, PDO::PARAM_INT);
-        $result = $this->db->resultSet();
-        return $result;
-
-        }
-        catch(PDOException $error){
-            echo $error->getMessage();
-        }
-
-        
-    }
-
-    public function update($POST)
-    {
         try {
-            $this->db->query("DELETE FROM Pakket WHERE Pakket.Id = :deletepakketId");
-            $this->db->bind(':deletepakketId', $POST["pakketId"], PDO::PARAM_STR);
-            $this->db->execute();
-    
-            $this->db->query("INSERT INTO Pakket (
-                                Id,
-                                KlantId,
-                                ProductId,
-                                Aantal,
-                                IsActive,
-                                Opmerking,
-                                DatumAangemaakt,
-                                DatumGewijzigd
-                            )
-                            VALUES (
-                                :pakketId,
-                                :KlantId,
-                                :ProductId,
-                                :Aantal,
-                                1,
-                                NULL,
-                                SYSDATE(6),
-                                SYSDATE(6)
-                            )");
-            $this->db->bind(':pakketId', $POST["pakketId"], PDO::PARAM_INT);
-            $this->db->bind(':ProductId', $POST["productId"], PDO::PARAM_INT);
-            $this->db->bind(':KlantId', $POST["klantId"], PDO::PARAM_INT);
-            $this->db->bind(':Aantal', $POST["Aantal"], PDO::PARAM_INT);
-            $this->db->execute();
-    
-            return true;
-        } catch (PDOException $error) {
+            $sql="         
+            SELECT
+            gezin.Id as gezinId,
+        gezin.Naam,
+        gezin.Omschrijving,
+        gezin.AantalVolwassen,
+        gezin.AantalKinderen,
+        gezin.AantalBaby,
+        CONCAT(persoon.Voornaam, ' ', COALESCE(persoon.Tussenvoegsel, ' '), persoon.Achternaam ) AS vertegwoordiger
+        FROM
+        gezin
+        INNER JOIN
+        persoon ON gezin.Id = persoon.GezinId
+        WHERE
+        persoon.IsVertegenwoordiger = 1
+        GROUP BY
+        gezin.Naam;";
+   
+            $this->db->query($sql);
+            $result = $this->db->resultSet();
+            return $result;
+
+        } catch(PDOException $error) {
             echo $error->getMessage();
-            return false;
+            throw $error->getMessage();
         }
     }
+
+    public function details($GezinId)
+    {
+
+        try {
+            $sql="   
+
+            select 
+            voedselpakket.Id as voedselpakketId,
+            voedselpakket.PakkketNummer,
+            voedselpakket.DatumSamenstelling,
+            voedselpakket.DatumUitgifte,
+             voedselpakket.Status,
+             productpervoedselpakket.Product
+             
+    from gezin
     
+    inner join voedselpakket on
+    voedselpakket.GezinId = Gezin.Id
+    
+    inner join productpervoedselpakket on
+    productpervoedselpakket.VoedselpakketId =voedselpakket.Id
+    where gezin.Id =:GezinId
+    
+    group by voedselpakket.PakkketNummer";
+   
+            $this->db->query($sql);
+            $this->db->bind(':GezinId', $GezinId, PDO::PARAM_INT);
+            $result = $this->db->resultSet();
+            return $result;
 
-public function getallproducts($klantId)
-{
-    try{
-        $sql =  
-                "SELECT 
-                    PAK.Id AS PakketId,
-                    KLANT.Id AS KlantId,
-                    PROD.Id AS ProductId,
-                    KLANT.Naam AS KlantNaam,
-                    PROD.Categorie,
-                    PAK.Aantal,
-                    PROD.Naam
-
-                FROM Product AS PROD
-                inner JOIN Pakket AS PAK ON PAK.ProductId = PROD.Id
-                inner JOIN Klant AS KLANT ON KLANT.Id = PAK.KlantId AND KLANT.Id = :id ;";
-
-     
-        $this->db->query($sql);
-        $this->db->bind(':id', $klantId, PDO::PARAM_INT);
-        $result = $this->db->resultSet();
-        return $result;
-
-           }catch(PDOException $error){
+        } catch(PDOException $error) {
             echo $error->getMessage();
+            throw $error->getMessage();
         }
-}
+    }
 
-public function getvoedselpakketbyIds($ProductId)
-{
-    try{
-      $sql ="  
-                SELECT pakket.Id  as pakketId
-                ,klant.Id  as klantId
-                ,product.Id as productId
-                ,pakket.Aantal
-                from pakket
-                inner JOIN product ON pakket.ProductId = product.Id
-                inner JOIN Klant  ON KLANT.Id = pakket.KlantId
-                where product.id = :ProductId
-            ;";
+    public function gezinbyid($GezinId)
+    {
 
-        }catch(PDOException $error){
+        try {
+            $sql="         
+            select  gezin.naam,
+            gezin.Omschrijving,
+            gezin.AantalVolwassen + gezin.AantalKinderen +gezin.AantalBaby  as Totaal_personen
+            from gezin
+            where gezin.Id =:GezinId";
+   
+            $this->db->query($sql);
+            $this->db->bind(':GezinId', $GezinId, PDO::PARAM_INT);
+            $result = $this->db->single();
+            return $result;
+
+        } catch(PDOException $error) {
             echo $error->getMessage();
+            throw $error->getMessage();
         }
+    }
+
+    public function getupdateinfo($voedselpakketId )
+{
+
+    try {
+        $sql="
+        SELECT
+        
+    voedselpakket.PakkketNummer,
+ voedselpakket.Id as voedselpakketId,
+ voedselpakket.IsActive,
+
+    voedselpakket.Status
+  
+FROM
+    voedselpakket
+
+WHERE
+    voedselpakket.Id = :voedselpakketId";
 
         $this->db->query($sql);
-        $this->db->bind(':ProductId', $ProductId, PDO::PARAM_INT);
+        $this->db->bind(':voedselpakketId', $voedselpakketId, PDO::PARAM_INT);
         $result = $this->db->single();
         return $result;
+
+    } catch(PDOException $error) {
+        echo $error->getMessage();
+        throw $error->getMessage();
+    }
 }
 
-public function delete($id) {
-    try{$this->db->query("DELETE FROM Pakket WHERE id = :id");
-      $this->db->bind("id", $id, PDO::PARAM_INT);
+   
+public function update($POST)
+{
+    try {
+        $sql = "
+        UPDATE voedselpakket
+        SET voedselpakket.Status = :Status,
+            voedselpakket.DatumUitgifte = SYSDATE(6)
+        WHERE voedselpakket.Id = :voedselpakketId
+       ";
 
-
-      return $this->db->execute();
-    }catch(PDOException $e){
+        $this->db->query($sql);
+        $this->db->bind(':voedselpakketId', $POST["voedselpakketId"], PDO::PARAM_INT);
+        $this->db->bind(':Status', $POST["Status"], PDO::PARAM_STR);
+      
+        $result = $this->db->single();
+        return $result;
+    } catch(PDOException $error) {
+        echo $error->getMessage();
+        throw $error->getMessage();
     }
+}
+
+
     
-    }
+
     
 }

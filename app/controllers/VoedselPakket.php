@@ -12,141 +12,126 @@ class VoedselPakket extends Controller
     }
     public function index()
     {
-        $VoedselPakketten = $this->VoedselPakketModel->getPaketten();
 
-        $rows = '';
 
-        foreach ($VoedselPakketten as $value) {
-            $rows .= "<tr>
-                        <td>$value->Naam</td>
-                        <td>$value->AantalVolwassen</td>  
-                        <td>$value->AantalKinderen</td>
-                        <td>$value->AantalBaby</td>
-                        <td><a href='" . URLROOT . "/VoedselPakket/pakketperpersoon/$value->KlantId'><i class='bx bx-box'></i></i></a></td>
-                        <td><a href='" . URLROOT . "/VoedselPakket/allproduct/$value->KlantId'><i class='bx bx-edit-alt'></i></i></a></td>
-                        <td><a href='" . URLROOT . "/VoedselPakket/delete/$value->pakketId'><i class='bx bx-message-x'></i></i></a></td>
-                      </tr>";
-
-        }
-        $data = [
-        'rows' => $rows
-        ];
-
-        $this->view('VoedselPakket/index', $data);
+        $this->view('VoedselPakket/index');
 
     }
 
-    public function pakketperpersoon($Id)
+    public function read()
     {
-
-        $VoedselPakket = $this->VoedselPakketModel->getPakketById($Id);
-
+        $getzin = $this->VoedselPakketModel->getgezin();
 
         $rows = '';
 
-        foreach ($VoedselPakket as $value) {
-            if($value->Aantal) {
-                $value->Aantal = "is leeg";
-            } else {
-                $rows .= "<tr>
-                        <td>$value->KlantNaam</td>
-                        <td>$value->Categorie</td>  
-                        <td>$value->Aantal</td>
-                        <td>$value->Naam</td>
-                        
-                      </tr>";
 
+
+
+        foreach ($getzin as $value) {
+
+
+            $rows .= "<tr>
+                
+                            <td>$value->Naam</td>
+                            <td>$value->Omschrijving</td>  
+                            <td>$value->AantalVolwassen</td>
+                            <td>$value->AantalKinderen</td>
+                            <td>$value->AantalBaby</td>
+                            <td>$value->vertegwoordiger</td>
+                            <td><a href='" . URLROOT . "/VoedselPakket/details/$value->gezinId'><i class='bx bxs-package'></i></a></td>
+                            
+                          
+                            </tr>
+                            ";
+        }
+
+        $data = [
+            'title' => 'overzicht gezinnen met voedselpakket',
+
+            'rows' => $rows
+        ];
+
+
+        $this->view('VoedselPakket/read', $data);
+
+    }
+
+    public function details($GezinId)
+    {
+        $details = $this->VoedselPakketModel->details($GezinId);
+        $gezinbyid = $this->VoedselPakketModel->gezinbyid($GezinId);
+
+        $rows = '';
+
+
+
+
+
+
+        foreach ($details as $value) {
+
+
+            $rows .= "<tr>
+                
+                            <td>$value->PakkketNummer</td>
+                            <td>$value->DatumSamenstelling</td>  
+                            <td>$value->DatumUitgifte</td>
+                            <td>$value->Status</td>
+                            <td>$value->Product</td>
+                            <td><a href='" . URLROOT . "/VoedselPakket/update/$value->voedselpakketId'><i class='bx bxs-edit-alt'></i></i></a></td>
+                            </tr>
+                            ";
+        }
+
+        $data = [
+            'title' => 'overzicht voedselpakket',
+            'naam' => $gezinbyid->naam,
+            'omschrijving' => $gezinbyid->Omschrijving,
+            'Totaal_personen' => $gezinbyid->Totaal_personen,
+
+
+            'rows' => $rows
+        ];
+
+
+        $this->view('VoedselPakket/details', $data);
+
+    }
+    public function update($voedselpakketId = 0)
+    {
+        $successMessage = '';
+        $foutmelding = ''; 
+    
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    
+            $getupdateinfo = $this->VoedselPakketModel->update($POST);
+            $successMessage = 'De wijziging is doorgevoerd';
+    
+            $data = [
+                'voedselpakketId' => $POST["voedselpakketId"],
+                'successMessage' => $successMessage,
+                'foutmelding' => $foutmelding,
+            ];
+    
+            $this->view('VoedselPakket/update', $data);
+        } else {
+            $getupdateinfo = $this->VoedselPakketModel->getupdateinfo($voedselpakketId);
+    
+            if ($getupdateinfo->IsActive == 0) {
+                $foutmelding = 'Dit gezin is niet meer ingeschreven bij de voedselbank en daarom kan de status niet meer gewijzigd worden';
             }
-        }
-
-        $data = [
-        'rows' => $rows
-          ];
-
-        $this->view('VoedselPakket/pakketperpersoon', $data);
-
-
-    }
-
-    public function allproduct($klantId)
-    {
-
-        $getallproducts = $this->VoedselPakketModel->getallproducts($klantId);
-
-
-        $rows = '';
-
-        foreach ($getallproducts as $value) {
-
-            $rows .= "<tr>
-                        <td>$value->KlantNaam</td>
-                        <td>$value->Naam</td>  
-                        <td>$value->Aantal</td>
-                        <td>$value->Naam</td>
-                        <td><a href='" . URLROOT . "/VoedselPakket/update/$value->ProductId'><i class='bx bx-edit-alt'></i></i></a></td>
-                        
-                      </tr>";
-
-        }
-
-
-        $data = [
-        'rows' => $rows
-          ];
-
-        $this->view('VoedselPakket/allproduct', $data);
-
-
-    }
-    public function update($ProductId = NULL)
-      {
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-        if ($POST['Aantal'] < 0) {
-            // Handle the error message when 'Aantal' is below 0
-            echo "Je kan geen negatief aantal invoeren";
-            return;
-        }
-
     
-        $update = $this->VoedselPakketModel->update($POST);
-        
-        // Add a header redirect after the update using URLROOT
-        header("Refresh: 4; URL=" . URLROOT . "/VoedselPakket/pakketperpersoon". $POST['klantId']);
-        echo "Het aantal is aangepast";
-        exit;
-    } else {
-        $getvoedselpakket = $this->VoedselPakketModel->getvoedselpakketbyIds($ProductId);
-
-
-        $data = [
-            'pakketId' => $getvoedselpakket->pakketId,
-            'klantId' => $getvoedselpakket->klantId,
-            'productId' => $getvoedselpakket->productId,
-            'Aantal' => $getvoedselpakket->Aantal,
-        ];
-        $this->view('VoedselPakket/update', $data);
-    }
-}
-
-    public function delete($Id) {
-        
-    $this->VoedselPakketModel->delete($Id);
-
-    $data =[
-      'deleteStatus' => "De Pakket is succesvol verwijderd!"
-    ];
-    $this->view("VoedselPakket/delete", $data);
-    header("Refresh:3; url=" . URLROOT . "/familie/index");
-  }
+            $data = [
+                'title' => 'wijzigen van voedselpakket',
+                'Status' => $getupdateinfo->Status,
+                'voedselpakketId' => $getupdateinfo->voedselpakketId,
+                'successMessage' => $successMessage,
+                'foutmelding' => $foutmelding,
+            ];
     
-}
-
-
-
-    // Add a header redirect
-
-
-
-
+            $this->view('VoedselPakket/update', $data);
+        }
+    }
+    
+}    
