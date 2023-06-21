@@ -13,6 +13,7 @@ class klantenModel
 public function getklant()
     {
         $sql = "SELECT
+    Persoon.Id AS Id,
     Gezin.Naam AS NaamGezin,
     CONCAT_WS(' ', Persoon.Voornaam, NULLIF(Persoon.Tussenvoegsel, ''), Persoon.Achternaam) AS Vertegenwoordiger,
     Contact.Email AS E_mailadres,
@@ -22,20 +23,97 @@ public function getklant()
     Contact.Postcode
 FROM
     Persoon
-    INNER JOIN Gezin ON Persoon.GezinId = Gezin.Id
-    INNER JOIN ContactPerGezin ON Persoon.GezinId = ContactPerGezin.GezinId
-    INNER JOIN Contact ON ContactPerGezin.ContactId = Contact.Id
+    LEFT JOIN Gezin ON Persoon.GezinId = Gezin.Id
+    LEFT JOIN ContactPerGezin ON Persoon.GezinId = ContactPerGezin.GezinId
+    LEFT JOIN Contact ON ContactPerGezin.ContactId = Contact.Id
 WHERE
-    Persoon.IsVertegenwoordiger = 1;
+    Contact.Email IS NOT NULL AND Contact.Mobiel IS NOT NULL;
+
+
 ";
         $this->db->query($sql);
         $result = $this->db->resultSet();
         return $result;
 }
 
-
-public function getklantoverzicht()
+public function details($PersoonId)
 {
+    try {
+        $sql = "
+       SELECT
+        p.Voornaam,
+        p.Tussenvoegsel,
+        p.Achternaam,
+        p.Geboortedatum,
+        p.TypePersoon,
+        CASE WHEN p.IsVertegenwoordiger = 1 THEN 'Ja' ELSE 'Nee' END AS Vertegenwoordiger,
+        c.Straat AS Straatnaam,
+        c.Huisnummer,
+        c.Toevoeging,
+        c.Postcode,
+        c.Woonplaats,
+        c.Email,
+        c.Mobiel
+    FROM
+        Persoon AS p
+    INNER JOIN
+        Contact AS c ON p.Id = c.Id
+    WHERE
+        p.id = :persoonid
+        ";
+
+        $this->db->query($sql);
+        $this->db->bind(':persoonid', $PersoonId, PDO::PARAM_INT);
+
+        $result = $this->db->resultSet();
+        return $result;
+
+    } catch(PDOException $error) {
+        echo $error->getMessage();
+        throw $error;
+    }
+}
+
+
+
+}
+// public function getKlantDetails($klantId)
+// {
+//     try {
+//         $sql = "
+//         SELECT
+//             p.Voornaam,
+//             p.Tussenvoegsel,
+//             p.Achternaam,
+//             p.Geboortedatum,
+//             p.TypePersoon,
+//             CASE WHEN p.IsVertegenwoordiger = 1 THEN 'Ja' ELSE 'Nee' END AS Vertegenwoordiger,
+//             c.Straat AS Straatnaam,
+//             c.Huisnummer,
+//             c.Toevoeging,
+//             c.Postcode,
+//             c.Woonplaats,
+//             c.Email,
+//             c.Mobiel
+//         FROM
+//             Persoon AS p
+//         INNER JOIN
+//             Contact AS c ON p.Id = c.Id
+//         WHERE
+//             p.Id = :klantId";
+
+//         $this->db->query($sql);
+//         $this->db->bind(':klantId', $klantId);
+//         $result = $this->db->single();
+//         return $result;
+//     } catch(PDOException $error) {
+//         echo $error->getMessage();
+//         throw $error->getMessage();
+//     }
+// }
+// }
+// public function getklantoverzicht()
+// {
     $sql = "SELECT
         p.Voornaam,
         p.Tussenvoegsel,
@@ -55,41 +133,41 @@ public function getklantoverzicht()
     INNER JOIN
         Contact AS c ON p.Id = c.Id";
 
-    $this->db->query($sql);
-    $result = $this->db->resultSet();
-    return $result;
-}
+//     $this->db->query($sql);
+//     $result = $this->db->resultSet();
+//     return $result;
+// }
 
-public function getklantoverzichtbyid($contactId)
-{
-    $sql = "SELECT
-        p.Voornaam,
-        p.Tussenvoegsel,
-        p.Achternaam,
-        p.Geboortedatum,
-        p.TypePersoon,
-        CASE WHEN p.IsVertegenwoordiger = 1 THEN 'Ja' ELSE 'Nee' END AS Vertegenwoordiger,
-        c.Straat AS Straatnaam,
-        c.Huisnummer,
-        c.Toevoeging,
-        c.Postcode,
-        c.Woonplaats,
-        c.Email,
-        c.Mobiel
-    FROM
-        Persoon AS p
-    INNER JOIN
-        Contact AS c ON p.Id = c.Id
-    WHERE
-        c.Id = :contactId";
+// public function getklantoverzichtbyid($contactId)
+// {
+//     $sql = "SELECT
+//         p.Voornaam,
+//         p.Tussenvoegsel,
+//         p.Achternaam,
+//         p.Geboortedatum,
+//         p.TypePersoon,
+//         CASE WHEN p.IsVertegenwoordiger = 1 THEN 'Ja' ELSE 'Nee' END AS Vertegenwoordiger,
+//         c.Straat AS Straatnaam,
+//         c.Huisnummer,
+//         c.Toevoeging,
+//         c.Postcode,
+//         c.Woonplaats,
+//         c.Email,
+//         c.Mobiel
+//     FROM
+//         Persoon AS p
+//     INNER JOIN
+//         Contact AS c ON p.Id = c.Id
+//     WHERE
+//         c.Id = :contactId";
 
-    $this->db->query($sql);
-    $this->db->bind(':contactId', $contactId);
-    $result = $this->db->resultSet();
-    return $result;
-}
+//     $this->db->query($sql);
+//     $this->db->bind(':contactId', $contactId);
+//     $result = $this->db->resultSet();
+//     return $result;
+// }
 
-}
+// }
 
   // public function getklantbyid($persoonId)
   // {

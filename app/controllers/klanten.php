@@ -23,7 +23,7 @@ public function klantenoverzicht()
     $rows = '';
 
     foreach ($klanten as $value) {
-    $persoonId = isset($value->Id) ? $value->Id : '';
+    $PersoonId = isset($value->Id) ? $value->Id : '';
     $rows .= "<tr>
         <td>$value->NaamGezin</td>
         <td>$value->Vertegenwoordiger</td>
@@ -31,7 +31,7 @@ public function klantenoverzicht()
         <td>$value->Mobiel</td>
         <td>$value->Adres</td>
         <td>$value->Woonplaats</td>
-        <td><a href='" . URLROOT . "/klanten/klantenoverzichtupdate/$value->Id'><img src='/public/img/bx-edit.svg' alt='Edit' class='icon'></a></td>
+        <td><a href='" . URLROOT . "/klanten/details/$PersoonId'><img src='/public/img/bx-edit.svg' alt='Edit' class='icon'></a></td>
 
         </tr>";
     }
@@ -44,52 +44,50 @@ public function klantenoverzicht()
     $this->view('klanten/klantenoverzicht', $data);
 }
 
+public function details($PersoonId)
+{
+    try {
+        $details = $this->klantenModel->details($PersoonId);
 
-public function klantenoverzichtupdate($contactId = null)
-{  
-    if ($contactId) {
-        $klanten = $this->klantenModel->getklantoverzichtbyid($contactId); // Retrieve details of a specific contact by ID
-        $title = 'Klant Overzicht Update - ID: ' . $contactId;
-    } else {
-        $klanten = $this->klantenModel->getklantoverzicht();
-        $title = 'Klant Overzicht Update';
+        $rows = '';
+
+        foreach ($details as $value) {
+            $rows .= "<tr>
+                <td>$value->Voornaam</td>
+                <td>$value->Tussenvoegsel</td>  
+                <td>$value->Achternaam</td>
+                <td>$value->Geboortedatum</td>
+                <td>$value->TypePersoon</td>
+                <td>$value->Vertegenwoordiger</td>
+                <td>$value->Straatnaam</td>
+                <td>$value->Huisnummer</td>
+                <td>$value->Toevoeging</td>
+                <td>$value->Postcode</td>
+                <td>$value->Woonplaats</td>
+                <td>$value->Email</td>
+                <td>$value->Mobiel</td>
+                 <td><a href='" . URLROOT . "/klanten/update/$PersoonId'><img src='/public/img/bx-edit.svg' alt='Edit' class='icon'></a></td>
+
+        </tr>
+            </tr>";
+        }
+
+        $data = [
+            'title' => 'Overzicht voedselpakket',
+            'rows' => $rows
+        ];
+
+        $this->view('klanten/details', $data);
+
+    } catch(PDOException $error) {
+        echo $error->getMessage();
+        throw $error;
     }
-
-    $rows = '';
-
-    foreach ($klanten as $value) {
-        // Display the details of the specific contact
-        $rows .= "<tr>
-            <td>$value->Voornaam</td>
-            <td>$value->Tussenvoegsel</td>
-            <td>$value->Achternaam</td>
-            <td>$value->Geboortedatum</td>
-            <td>$value->TypePersoon</td>
-            <td>$value->Vertegenwoordiger</td>
-            <td>$value->Straatnaam</td>
-            <td>$value->Huisnummer</td>
-            <td>$value->Toevoeging</td>
-            <td>$value->Postcode</td>
-            <td>$value->Woonplaats</td>
-            <td>$value->Email</td>
-            <td>$value->Mobiel</td>
-            <td><a href='" . URLROOT . "/klanten/update/$contactId'>Update</a></td>
-        </tr>";
-    }
-
-    $data = [
-        'title' => $title,
-        'amountOfklanten' => sizeof($klanten),
-        'rows' => $rows,
-        'klant' => $klanten
-    ];
-
-    $this->view('klanten/klantenoverzichtupdate', $data);
-}
-
 }
 
 
+
+}
 // public function klantenoverzichtupdate($contactId)
 // {
 //     $klanten = $this->klantenModel->getklantupdate($contactId);
