@@ -146,16 +146,15 @@ public function getvoedselpakketbyIds($ProductId)
 {
     try{
       $sql ="  
-       select pakket.Id  as pakketId
-		,klant.Id  as klantId
-        ,product.Id as productId
-        ,pakket.Aantal
-        from pakket
-        inner JOIN product ON pakket.ProductId = product.Id
-		inner JOIN Klant  ON KLANT.Id = pakket.KlantId
-        where product.id = :ProductId
-;
-            ";
+                SELECT pakket.Id  as pakketId
+                ,klant.Id  as klantId
+                ,product.Id as productId
+                ,pakket.Aantal
+                from pakket
+                inner JOIN product ON pakket.ProductId = product.Id
+                inner JOIN Klant  ON KLANT.Id = pakket.KlantId
+                where product.id = :ProductId
+            ;";
 
         }catch(PDOException $error){
             echo $error->getMessage();

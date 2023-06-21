@@ -165,7 +165,7 @@ class KlantModel {
 
 
 
-        // Insert into Allergie table
+        // Insert into Contact table
         $this->db->query("INSERT INTO Contact (KlantId, 
                                                  Plaats,
                                                  Telefoonnummer,
