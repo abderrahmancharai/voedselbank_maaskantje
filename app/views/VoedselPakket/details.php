@@ -46,7 +46,7 @@
   </thead>
   <tbody>
             <?= $data['rows']; ?>
-        </tbody>
+ </tbody>
 </table>
 </body>
 </html>

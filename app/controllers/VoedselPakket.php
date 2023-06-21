@@ -20,41 +20,61 @@ class VoedselPakket extends Controller
 
     public function read()
     {
-        $getzin = $this->VoedselPakketModel->getgezin();
-
-        $rows = '';
-
-
-
-
-        foreach ($getzin as $value) {
-
-
-            $rows .= "<tr>
-                
-                            <td>$value->Naam</td>
-                            <td>$value->Omschrijving</td>  
-                            <td>$value->AantalVolwassen</td>
-                            <td>$value->AantalKinderen</td>
-                            <td>$value->AantalBaby</td>
-                            <td>$value->vertegwoordiger</td>
-                            <td><a href='" . URLROOT . "/VoedselPakket/details/$value->gezinId'><i class='bx bxs-package'></i></a></td>
-                            
-                          
-                            </tr>
-                            ";
+        $nietgevonden = ''; 
+    
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+          
+            $search = $this->VoedselPakketModel->SEARCH($POST);
+            if (empty($search)) {
+                $nietgevonden = 'nope niet gelukt';
+            }
+    
+            $rows = '';
+            foreach ($search as $value) {
+                $rows .= "<tr>
+                    <td>$value->Naam</td>
+                    <td>$value->Omschrijving</td>
+                    <td>$value->AantalVolwassen</td>
+                    <td>$value->AantalKinderen</td>
+                    <td>$value->AantalBaby</td>
+                    <td>$value->vertegwoordiger</td>
+                    <td><a href='" . URLROOT . "/VoedselPakket/details/$value->gezinId'><i class='bx bxs-package'></i></a></td>
+                    </tr>";
+            }
+    
+            $data1 = [
+                'title' => 'overzicht gezinnen met voedselpakket',
+                'nietgevonden' => $nietgevonden,
+                'rows' => $rows
+            ];
+            $this->view('VoedselPakket/read', $data1);
+        } else {
+            $getzin = $this->VoedselPakketModel->getgezin();
+            $rows = '';
+    
+            foreach ($getzin as $value) {
+                $rows .= "<tr>
+                    <td>$value->Naam</td>
+                    <td>$value->Omschrijving</td>
+                    <td>$value->AantalVolwassen</td>
+                    <td>$value->AantalKinderen</td>
+                    <td>$value->AantalBaby</td>
+                    <td>$value->vertegwoordiger</td>
+                    <td><a href='" . URLROOT . "/VoedselPakket/details/$value->gezinId'><i class='bx bxs-package'></i></a></td>
+                    </tr>";
+            }
+    
+            $data = [
+                'title' => 'overzicht gezinnen met voedselpakket',
+                'rows' => $rows
+            ];
+    
+            $this->view('VoedselPakket/read', $data);
         }
-
-        $data = [
-            'title' => 'overzicht gezinnen met voedselpakket',
-
-            'rows' => $rows
-        ];
-
-
-        $this->view('VoedselPakket/read', $data);
-
     }
+    
+
 
     public function details($GezinId)
     {
