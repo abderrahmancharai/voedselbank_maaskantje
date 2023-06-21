@@ -27,7 +27,7 @@
                             <td>$items->AantalBabys</td>
                             <td>$items->VertegenwoordigerNaam</td>
                             <td>
-                                <a href='" . URLROOT . "/allergieen/allergieendetails/$items->AllergieId'><img src='" . URLROOT . "/img/bx-edit.svg' alt='Info'></a>
+                                <a href='" . URLROOT . "/allergieen/allergieendetails/$items->GezinId'><img src='" . URLROOT . "/img/bx-edit.svg' alt='Info'></a>
                             </td>
                         </tr>";
             }
@@ -39,9 +39,9 @@
             $this->view('allergieen/index', $data);
         }
 
-        public function allergieendetails($AllergieId)
+        public function allergieendetails($GezinId)
         {
-            $allergieDetail = $this->allergieenModel->allergieendetails($AllergieId);
+            $allergieDetail = $this->allergieenModel->allergieendetails($GezinId);
 
             $rows = '';
 

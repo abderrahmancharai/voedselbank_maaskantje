@@ -36,28 +36,24 @@ class allergieenModel {
         }
     }
 
-    public function allergieendetails($AllergieId)
+    public function allergieendetails($GezinId)
 {
     try
     {
-        $sql = "SELECT Persoon.Voornaam, 
+        $sql = "SELECT 
+                       Persoon.Voornaam, 
                        Persoon.TypePersoon, 
                        Persoon.IsVertegenwoordiger,
-                       Allergie.Id AS AllergieId,
                        Allergie.Naam
-                FROM Persoon
+                FROM Gezin
 
-                INNER JOIN AllergiePerPersoon 
-                ON Persoon.Id = AllergiePerPersoon.PersoonId
+                INNER JOIN Persoon ON Gezin.Id = Persoon.GezinId
+                LEFT JOIN AllergiePerPersoon ON Persoon.Id = AllergiePerPersoon.PersoonId
+                LEFT JOIN Allergie ON AllergiePerPersoon.AllergieId = Allergie.Id;
 
-                INNER JOIN Allergie 
-                ON AllergiePerPersoon.AllergieId = Allergie.Id
-
-                WHERE Allergie.Id = :AllergieId;
                 ";
 
         $this->db->query($sql);
-        $this->db->bind(':AllergieId', $AllergieId);
         $result = $this->db->resultSet();
         return $result;
     } catch (PDOException $error) {
