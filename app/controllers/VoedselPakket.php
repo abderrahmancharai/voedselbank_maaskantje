@@ -104,6 +104,7 @@ class VoedselPakket extends Controller
     
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            
     
             $getupdateinfo = $this->VoedselPakketModel->update($POST);
             $successMessage = 'De wijziging is doorgevoerd';

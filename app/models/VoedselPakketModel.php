@@ -139,6 +139,7 @@ public function update($POST)
         UPDATE voedselpakket
         SET voedselpakket.Status = :Status,
             voedselpakket.DatumUitgifte = SYSDATE(6)
+            
         WHERE voedselpakket.Id = :voedselpakketId
        ";
 
