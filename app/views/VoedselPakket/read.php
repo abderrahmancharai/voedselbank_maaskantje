@@ -4,15 +4,16 @@
 <form action="<?= URLROOT; ?>/VoedselPakket/read" method="post">
           
             
-            <div class="form-group row">
-  
-               <select name="selecteer eetwens"  class="form-control ">
-                  <option value="omnivoor">omnivoor</option>
-                  <option value="vegatarisch">vegatarisch</option>
-                  <option value="Veganistisch">Veganistisch</option>
-                  <option value="Geenvarken">Geenvarken</option>
-               </select>
-            </div>
+<div class="form-group row">
+    <select name="selecteer eetwens" class="form-control">
+          <option>selecteer Eetwensen</option>
+        <option value="omnivoor" <?= ($_POST['selecteer_eetwens'] === 'omnivoor') ? 'selected' : ''; ?>>omnivoor</option>
+        <option value="vegatarisch" <?= ($_POST['selecteer_eetwens'] === 'vegatarisch') ? 'selected' : ''; ?>>vegetarisch</option>
+        <option value="Veganistisch" <?= ($_POST['selecteer_eetwens'] === 'Veganistisch') ? 'selected' : ''; ?>>Veganistisch</option>
+        <option value="Geenvarken" <?= ($_POST['selecteer_eetwens'] === 'Geenvarken') ? 'selected' : ''; ?>>Geenvarken</option>
+    </select>
+</div>
+
             <div class="form-actions">
                <input class="btn btn-warning mr-1" type="submit" value="toon gezinnen">
 
@@ -29,17 +30,19 @@
       <th scope="col">AantalBaby</th>
       <th scope="col">vertegwoordiger</th>
       <th scope="col">voedselpakket Details</th>
+      <?php if (!empty($data["nietgevonden"])) { ?>
+                <div class="alert alert-warning" role="alert">
+                <?= $data["nietgevonden"]; ?>
+                </div>
+            <?php } ?>
  
     </tr>
   </thead>
   <tbody>
             <?= $data['rows']; ?>
+         
         </tbody>
-        <?php if (!empty($data["nietgevonden"])) { ?>
-                <div class="alert alert-danger" role="alert">
-                <?= $data["nietgevonden"]; ?>
-                </div>
-            <?php } ?>
+        
 </table>
 <a href="<?= URLROOT; ?>/VoedselPakket/read" class="btn btn-primary">Home  </a>
 

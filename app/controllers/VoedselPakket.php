@@ -27,7 +27,7 @@ class VoedselPakket extends Controller
           
             $search = $this->VoedselPakketModel->SEARCH($POST);
             if (empty($search)) {
-                $nietgevonden = 'nope niet gelukt';
+                $nietgevonden = 'er zijn geen gezinnen bekent die de geslecteerde eetwens hebben';
             }
     
             $rows = '';
