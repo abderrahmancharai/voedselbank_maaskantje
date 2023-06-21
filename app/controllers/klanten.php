@@ -85,6 +85,45 @@ public function details($PersoonId)
     }
 }
 
+public function update($PersoonId = 0)
+{
+    $successMessage = '';
+    $foutmelding = '';
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        try {
+            $affectedRows = $this->klantenModel->updateinfo($PersoonId, $POST);
+            if ($affectedRows > 0) {
+                $successMessage = 'De wijziging is doorgevoerd';
+            } else {
+                $foutmelding = 'Er is een fout opgetreden tijdens het bijwerken';
+            }
+        } catch (PDOException $error) {
+            $foutmelding = $error->getMessage();
+        }
+
+        $data = [
+            'PersoonId' => $PersoonId,
+            'successMessage' => $successMessage,
+            'foutmelding' => $foutmelding,
+        ];
+
+        $this->view('klanten/update', $data);
+    } else {
+        $details = $this->klantenModel->details($PersoonId);
+
+        $data = [
+            'title' => 'Wijzigen van persoon',
+            'details' => $details,
+            'successMessage' => $successMessage,
+            'foutmelding' => $foutmelding,
+        ];
+
+        $this->view('klanten/update', $data);
+    }
+}
 
 
 }

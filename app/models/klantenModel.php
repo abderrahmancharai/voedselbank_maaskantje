@@ -74,6 +74,90 @@ public function details($PersoonId)
     }
 }
 
+public function updateinfo($PersoonId, $data)
+{
+    try {
+        $sql = "
+            UPDATE Persoon AS p
+            INNER JOIN Contact AS c ON p.Id = c.Id
+            SET
+                p.Voornaam = :voornaam,
+                p.Tussenvoegsel = :tussenvoegsel,
+                p.Achternaam = :achternaam,
+                p.Geboortedatum = :geboortedatum,
+                p.TypePersoon = :typePersoon,
+                p.IsVertegenwoordiger = :vertegenwoordiger,
+                c.Straat = :straatnaam,
+                c.Huisnummer = :huisnummer,
+                c.Toevoeging = :toevoeging,
+                c.Postcode = :postcode,
+                c.Woonplaats = :woonplaats,
+                c.Email = :email,
+                c.Mobiel = :mobiel
+            WHERE
+                p.Id = :persoonId
+        ";
+
+        $this->db->query($sql);
+        $this->db->bind(':voornaam', $data['voornaam']);
+        $this->db->bind(':tussenvoegsel', $data['tussenvoegsel']);
+        $this->db->bind(':achternaam', $data['achternaam']);
+        $this->db->bind(':geboortedatum', $data['geboortedatum']);
+        $this->db->bind(':typePersoon', $data['typePersoon']);
+        $this->db->bind(':vertegenwoordiger', $data['vertegenwoordiger']);
+        $this->db->bind(':straatnaam', $data['straatnaam']);
+        $this->db->bind(':huisnummer', $data['huisnummer']);
+        $this->db->bind(':toevoeging', $data['toevoeging']);
+        $this->db->bind(':postcode', $data['postcode']);
+        $this->db->bind(':woonplaats', $data['woonplaats']);
+        $this->db->bind(':email', $data['email']);
+        $this->db->bind(':mobiel', $data['mobiel']);
+        $this->db->bind(':persoonId', $PersoonId, PDO::PARAM_INT);
+
+        $this->db->execute();
+
+        // Return the number of affected rows
+        return $this->db->rowCount();
+    } catch (PDOException $error) {
+        echo $error->getMessage();
+        throw $error;
+    }
+}
+
+public function update($PersoonId, $data)
+{
+    try {
+        $sql = "
+            UPDATE Persoon
+            SET
+                Voornaam = :voornaam,
+                Tussenvoegsel = :tussenvoegsel,
+                Achternaam = :achternaam,
+                Geboortedatum = :geboortedatum,
+                TypePersoon = :typePersoon,
+                IsVertegenwoordiger = :vertegenwoordiger
+            WHERE
+                Id = :persoonId
+        ";
+
+        $this->db->query($sql);
+        $this->db->bind(':voornaam', $data['voornaam']);
+        $this->db->bind(':tussenvoegsel', $data['tussenvoegsel']);
+        $this->db->bind(':achternaam', $data['achternaam']);
+        $this->db->bind(':geboortedatum', $data['geboortedatum']);
+        $this->db->bind(':typePersoon', $data['typePersoon']);
+        $this->db->bind(':vertegenwoordiger', $data['vertegenwoordiger']);
+        $this->db->bind(':persoonId', $PersoonId, PDO::PARAM_INT);
+
+        $this->db->execute();
+
+        // Return the number of affected rows
+        return $this->db->rowCount();
+    } catch (PDOException $error) {
+        echo $error->getMessage();
+        throw $error;
+    }
+}
 
 
 }
@@ -114,24 +198,24 @@ public function details($PersoonId)
 // }
 // public function getklantoverzicht()
 // {
-    $sql = "SELECT
-        p.Voornaam,
-        p.Tussenvoegsel,
-        p.Achternaam,
-        p.Geboortedatum,
-        p.TypePersoon,
-        CASE WHEN p.IsVertegenwoordiger = 1 THEN 'Ja' ELSE 'Nee' END AS Vertegenwoordiger,
-        c.Straat AS Straatnaam,
-        c.Huisnummer,
-        c.Toevoeging,
-        c.Postcode,
-        c.Woonplaats,
-        c.Email,
-        c.Mobiel
-    FROM
-        Persoon AS p
-    INNER JOIN
-        Contact AS c ON p.Id = c.Id";
+    // $sql = "SELECT
+    //     p.Voornaam,
+    //     p.Tussenvoegsel,
+    //     p.Achternaam,
+    //     p.Geboortedatum,
+    //     p.TypePersoon,
+    //     CASE WHEN p.IsVertegenwoordiger = 1 THEN 'Ja' ELSE 'Nee' END AS Vertegenwoordiger,
+    //     c.Straat AS Straatnaam,
+    //     c.Huisnummer,
+    //     c.Toevoeging,
+    //     c.Postcode,
+    //     c.Woonplaats,
+    //     c.Email,
+    //     c.Mobiel
+    // FROM
+    //     Persoon AS p
+    // INNER JOIN
+    //     Contact AS c ON p.Id = c.Id";
 
 //     $this->db->query($sql);
 //     $result = $this->db->resultSet();
