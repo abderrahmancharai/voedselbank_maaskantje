@@ -1,7 +1,7 @@
 <?php require APPROOT . '/views/includes/head.php'; ?>
 <body>
 
-<h1>details INFORMATIE</h1>
+<h1>Overzicht producten</h1>
  <!-- <h3> Naam: <?= $data["Naam"];?></h3>
  <h3> Leverancier nummer: <?= $data["LeverancierNummer"];?></h3>
  <h3> Leverancier type: <?= $data["LeverancierType"];?></h3> -->

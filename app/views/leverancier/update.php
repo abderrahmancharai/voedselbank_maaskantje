@@ -1,39 +1,30 @@
 <?php require APPROOT . '/views/includes/head.php'; ?>
 
+<div class="container">
+   <div class="row justify-content-center">
+      <div class="col-md-6">
+         <div class="card">
+            <div class="card-body">
+               <h2 class="text-center" style="color: green;">Product wijzigen</h2>
 
-<div class="container container-mvckdemo">
-   <div class="wrapper-mvckdemo">
-      <div class="form-group">
-         <h2>wijzigen van Leveranciergegevens</h2>
-         <form action="<?= URLROOT; ?>/Leverancier/update" method="post">
+               <form action="<?= URLROOT; ?>/Leverancier/update" method="post">
 
-             
+                  <input type="hidden" name="productId" value="<?= $data["productId"]; ?>">
 
-         <input type="hidden" name="productId" value="<?= $data["productId"];?>">
+                  <div class="form-group">
+                     <label for="Houdbaarheidsdatum">Houdbaarheids datum</label>
+                     <input value="<?= $data["Houdbaarheidsdatum"]; ?>" type="date" name="Houdbaarheidsdatum" id="Houdbaarheidsdatum" class="form-control">
+                  </div>
 
-           
-            <div class="form-group row">
-                    <label for="Houdbaarheidsdatum">Datum eerstVolgendel levering</label>
-                    <input type="date" name="houdbaarheidsdatum" id="Houdbaarheidsdatum">
+                  <div class="form-group text-center">
+                     <button class="btn btn-warning mr-1" type="submit">Opslaan</button>
+                     <a class="btn btn-primary mr-1" href="<?= URLROOT; ?>/Leverancier/index">Terug</a>
+                     <a class="btn btn-success" href="<?= URLROOT; ?>/Leverancier/index/">Home</a>
+                  </div>
 
+               </form>
             </div>
-    
-
-     
-       
-                
-            <div class="form-group row">
-            
-                <input class="btn btn-warning mr-1 " type="submit" value="sla op"> 
-            </a>
-               <a class="btn btn-primary mr-1" href="<?php URLROOT; ?>/Leverancier/index">terug</a>
-       
-               <a class="btn btn-success" href="<?php URLROOT; ?>/Leverancier/index/">Home</a>
-            </div>
-             
-             
-            </div>
-         </form>
+         </div>
       </div>
    </div>
 </div>

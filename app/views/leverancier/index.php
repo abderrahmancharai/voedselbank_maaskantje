@@ -4,20 +4,22 @@
 <h1>Overzicht Leveranciers</h1>
 <!-- <a style="text-decoration: underline;"  href="<?=URLROOT;?>/Leverancier/toevoegen">levrancier toevoegen </a> | -->
 
-<form method="POST" action="<?= URLROOT; ?>/Leverancier/index">
-    <div>
-        <label for="leverancierType">Select Leverancier Type:</label>
-        <select id="leverancierType" name="leverancierType">
-            <option value="">All</option>
-            <option value="Bedrijf">Bedrijf</option>
-            <option value="Instelling">Instelling</option>
-            <option value="Overheid">Overheid</option>
-            <option value="Particulier">Particulier</option>
-            <option value="Donor">Donor</option>
-        </select>
-        <button type="submit">Filter</button>
-    </div>
-</form>
+<div class="d-flex justify-content-end">
+    <form method="POST" action="<?= URLROOT; ?>/Leverancier/index" class="form-inline">
+        <div class="form-group mb-2">
+            <select name="LeverancierType" class="form-control">
+                <option>Selecteer type</option>
+                <option>Bedrijf</option>
+                <option>Instelling</option>
+                <option>Overheid</option>
+                <option>Particulier</option>
+                <option>Donor</option>
+            </select>
+        </div>
+        <input class="btn btn-secondary ml-1" type="submit" value="Toon">
+    </form>
+</div>
+
 
     <table class="table">
         <thead class="thead-dark">
@@ -35,6 +37,12 @@
         <?= $data['rows']; ?>
         </tbody>
     </table>
+
+  <div class="form-group row">
+    <div class="col-md-12 text-md-right">
+        <a class="btn btn-primary" href="<?php URLROOT; ?>/Leverancier/index">Home</a>
+    </div>
+</div>
 
 
 

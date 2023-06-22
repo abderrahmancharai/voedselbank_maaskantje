@@ -14,7 +14,7 @@
 <h1>welkom mederwerker</h1>
 
 
-<a href="<?=URLROOT;?>/VoedselPakket/index">Klanten Voedselpakket</a> | 
+
 <a href="<?=URLROOT;?>/Leverancier/index">Overzicht leverancier</a> | 
 
 

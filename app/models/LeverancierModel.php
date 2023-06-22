@@ -9,6 +9,8 @@ class LeverancierModel
     {
         $this->db = new Database();
     }
+
+
     public function getleverancier()
     {
 
@@ -43,6 +45,45 @@ class LeverancierModel
             echo $error->getMessage();
             throw $error->getMessage();
         }
+    }
+
+    public function filterByType($POST)
+    {
+            
+            try {
+                $sql="
+    
+                        SELECT  
+                   
+                             LEVE.Id
+                            ,LEVE.Naam
+                            ,LEVE.ContactPersoon
+                            ,LEVE.LeverancierNummer
+                            ,LEVE.LeverancierType
+                            ,CON.Email
+                            ,CON.Mobiel
+
+                            FROM Leverancier AS LEVE
+
+                            INNER JOIN ContactPerLeverancier AS COPLE
+                            ON COPLE.LeverancierId = LEVE.Id
+
+                            INNER JOIN Contact AS CON
+                            ON CON.Id = COPLE.ContactId
+                            WHERE LeverancierType = :leverancierType;
+                                ";
+    
+                $this->db->query($sql);
+                $this->db->bind(':leverancierType', $POST['LeverancierType'], PDO::PARAM_STR);
+
+                $result = $this->db->resultSet();
+                return $result;
+    
+            }
+            catch(PDOException $error) {
+                echo $error->getMessage();
+                throw $error->getMessage();
+            }
     }
 
     public function getLeverancierById($productId)
@@ -134,7 +175,7 @@ class LeverancierModel
     
                     $this->db->query($sql);
                     $this->db->bind(':id', $id, PDO::PARAM_INT);
-                    $result = $this->db->resultSet();
+                    $result = $this->db->single();
                     return $result;
     
                 }
@@ -148,18 +189,28 @@ class LeverancierModel
 
     public function update($POST)
     {
+        try{
          $sql = "UPDATE Product
                  SET Houdbaarheidsdatum = :houdbaarheidsDatum
                  WHERE Id = :productId";
+                 
+                    
  
 
                 $this->db->query($sql);
-                                   
-                           
+                $this->db->bind(':houdbaarheidsDatum', $POST['Houdbaarheidsdatum'], PDO::PARAM_STR);
+                $this->db->bind(':productId', $POST['productId'], PDO::PARAM_INT);   
+                 $result = $this->db->single();
+                 return $result;
+        }
+        catch(PDOException $error) {
+                        echo $error->getMessage();
+                        throw $error->getMessage();
 
-                $this->db->bind(':houdbaarheidsDatum', $POST['Houdbaarheidsdatum'], PDO::PARAM_INT);
-                $this->db->bind(':productId', $POST['productId'], PDO::PARAM_INT);        
+
+                 
     }
+}
 
 
 
