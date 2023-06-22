@@ -19,11 +19,36 @@ class klanten extends Controller
 
 public function klantenoverzicht()
 {
+    //  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            
+    //             $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+    //             $klantenselect = $this->klantenModel->getselecteer($POST);
+                
+                     
+
+    //               $rows = '';
+
+
+    //             foreach ($klantenselect as $value){
+                
+              
+    //                 $rows .= "<tr>
+    //     <td>$value->NaamGezin</td>
+    //     <td>$value->Vertegenwoordiger</td>
+    //     <td>$value->E_mailadres</td>
+    //     <td>$value->Mobiel</td>
+    //     <td>$value->Adres</td>
+    //     <td>$value->Woonplaats</td>
+    //     <td><a href='" . URLROOT . "/klanten/details/$value->GezinId'><img src='/public/img/bx-edit.svg' alt='Edit' class='icon'></a></td>
+
+    //     </tr>";
+
+    //             } 
     $klanten = $this->klantenModel->getklant();
     $rows = '';
 
     foreach ($klanten as $value) {
-    $PersoonId = isset($value->Id) ? $value->Id : '';
     $rows .= "<tr>
         <td>$value->NaamGezin</td>
         <td>$value->Vertegenwoordiger</td>
@@ -31,18 +56,18 @@ public function klantenoverzicht()
         <td>$value->Mobiel</td>
         <td>$value->Adres</td>
         <td>$value->Woonplaats</td>
-        <td><a href='" . URLROOT . "/klanten/details/$PersoonId'><img src='/public/img/bx-edit.svg' alt='Edit' class='icon'></a></td>
+        <td><a href='" . URLROOT . "/klanten/details/$value->GezinId'><img src='/public/img/bx-edit.svg' alt='Edit' class='icon'></a></td>
 
         </tr>";
     }
 
     $data = [
         'title' => 'klanten in dienst',
-        'amountOfklanten' => sizeof($klanten),
         'rows' => $rows
     ];
     $this->view('klanten/klantenoverzicht', $data);
 }
+
 
 public function details($PersoonId)
 {
@@ -74,7 +99,8 @@ public function details($PersoonId)
 
         $data = [
             'title' => 'Overzicht voedselpakket',
-            'rows' => $rows
+            'rows' => $rows,
+            
         ];
 
         $this->view('klanten/details', $data);
@@ -85,41 +111,40 @@ public function details($PersoonId)
     }
 }
 
-public function update($PersoonId = 0)
+public function update($PersoonId = null)
 {
-    $successMessage = '';
+    $successMessage = 'sa';
     $foutmelding = '';
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        header("Refresh: 2; URL=" . URLROOT . "/klanten/klantenoverzicht");
+            echo "<div style='background-color: #7bff00; color: #155724; padding: 10px;'>De klantgegevens zijn gewijzigd</div>";
         $POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $update = $this->klantenModel->updateinfo($POST);
 
-        try {
-            $affectedRows = $this->klantenModel->updateinfo($PersoonId, $POST);
-            if ($affectedRows > 0) {
-                $successMessage = 'De wijziging is doorgevoerd';
-            } else {
-                $foutmelding = 'Er is een fout opgetreden tijdens het bijwerken';
-            }
-        } catch (PDOException $error) {
-            $foutmelding = $error->getMessage();
-        }
-
-        $data = [
-            'PersoonId' => $PersoonId,
-            'successMessage' => $successMessage,
-            'foutmelding' => $foutmelding,
-        ];
-
-        $this->view('klanten/update', $data);
     } else {
-        $details = $this->klantenModel->details($PersoonId);
+        $updatedetails = $this->klantenModel->detailsinfo($PersoonId);
 
-        $data = [
-            'title' => 'Wijzigen van persoon',
-            'details' => $details,
-            'successMessage' => $successMessage,
-            'foutmelding' => $foutmelding,
-        ];
+    $data = [
+        'title' => 'Wijzigen van persoon',
+        'details' => $updatedetails,
+        'successMessage' => $successMessage,
+        'foutmelding' => $foutmelding,
+        'PersoonId' => $updatedetails->Id,
+        'Voornaam' => $updatedetails->Voornaam,
+        'Tussenvoegsel' => $updatedetails->Tussenvoegsel,
+        'Achternaam' => $updatedetails->Achternaam,
+        'Geboortedatum' => $updatedetails->Geboortedatum,
+        'TypePersoon' => $updatedetails->TypePersoon,
+        'Vertegenwoordiger' => $updatedetails->Vertegenwoordiger,
+        'Straatnaam' => $updatedetails->Straatnaam,
+        'Huisnummer' => $updatedetails->Huisnummer,
+        'Toevoeging' => $updatedetails->Toevoeging,
+        'Postcode' => $updatedetails->Postcode,
+        'Woonplaats' => $updatedetails->Woonplaats,
+        'Email' => $updatedetails->Email,
+        'Mobiel' => $updatedetails->Mobiel,
+    ];
 
         $this->view('klanten/update', $data);
     }

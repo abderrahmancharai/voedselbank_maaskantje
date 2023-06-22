@@ -14,11 +14,12 @@ public function getklant()
     {
         $sql = "SELECT
     Persoon.Id AS Id,
+    Persoon.GezinId AS GezinId,
     Gezin.Naam AS NaamGezin,
     CONCAT_WS(' ', Persoon.Voornaam, NULLIF(Persoon.Tussenvoegsel, ''), Persoon.Achternaam) AS Vertegenwoordiger,
     Contact.Email AS E_mailadres,
     Contact.Mobiel,
-    Contact.Straat AS Adres,
+    CONCAT_WS(' ', Contact.Straat, Contact.Huisnummer) AS Adres,
     Contact.Woonplaats,
     Contact.Postcode
 FROM
@@ -27,11 +28,38 @@ FROM
     LEFT JOIN ContactPerGezin ON Persoon.GezinId = ContactPerGezin.GezinId
     LEFT JOIN Contact ON ContactPerGezin.ContactId = Contact.Id
 WHERE
-    Contact.Email IS NOT NULL AND Contact.Mobiel IS NOT NULL;
+    Persoon.Isvertegenwoordiger = 1;
+
 
 
 ";
         $this->db->query($sql);
+        $result = $this->db->resultSet();
+        return $result;
+}
+
+public function getselecteer($POST)
+    {
+        $sql = "SELECT
+    Persoon.Id AS Id,
+    Gezin.Naam AS NaamGezin,
+    CONCAT_WS(' ', Persoon.Voornaam, Persoon.Tussenvoegsel, Persoon.Achternaam) AS Vertegenwoordiger,
+    Contact.Email AS E_mailadres,
+    Contact.Mobiel,
+    Contact.Straat AS Adres,
+    Contact.Woonplaats,
+    Contact.Postcode AS Postcode
+FROM
+    Persoon
+    LEFT JOIN Gezin ON Persoon.GezinId = Gezin.Id
+    LEFT JOIN ContactPerGezin ON Persoon.GezinId = ContactPerGezin.GezinId
+    LEFT JOIN Contact ON ContactPerGezin.ContactId = Contact.Id
+WHERE
+    Contact.Postcode = :Postcode;
+
+";
+        $this->db->query($sql);
+        $this->db->bind(':Postcode', $POST["Postcode"], PDO::PARAM_STR);
         $result = $this->db->resultSet();
         return $result;
 }
@@ -41,6 +69,7 @@ public function details($PersoonId)
     try {
         $sql = "
        SELECT
+       p.Id,
         p.Voornaam,
         p.Tussenvoegsel,
         p.Achternaam,
@@ -74,11 +103,98 @@ public function details($PersoonId)
     }
 }
 
-public function updateinfo($PersoonId, $data)
+// Dit is detailsinfo
+public function detailsinfo($PersoonId)
+{
+    try {
+        $sql = "
+       SELECT
+         p.Id,
+        p.Voornaam,
+        p.Tussenvoegsel,
+        p.Achternaam,
+        p.Geboortedatum,
+        p.TypePersoon,
+        CASE WHEN p.IsVertegenwoordiger = 1 THEN 'Ja' ELSE 'Nee' END AS Vertegenwoordiger,
+        c.Straat AS Straatnaam,
+        c.Huisnummer,
+        c.Toevoeging,
+        c.Postcode,
+        c.Woonplaats,
+        c.Email,
+        c.Mobiel
+    FROM
+        Persoon AS p
+    INNER JOIN
+        Contact AS c ON p.Id = c.Id
+    WHERE
+        p.id = :persoonid
+        ";
+
+        $this->db->query($sql);
+        $this->db->bind(':persoonid', $PersoonId, PDO::PARAM_INT);
+
+        $result = $this->db->single();
+        return $result;
+
+    } catch(PDOException $error) {
+        echo $error->getMessage();
+        throw $error;
+    }
+}
+
+public function updateinfo($POST)
 {
     try {
         $sql = "
             UPDATE Persoon AS p
+            INNER JOIN Contact AS c ON p.Id = c.Id
+            SET
+                p.Voornaam = :voornaam,
+                p.Tussenvoegsel = :tussenvoegsel,
+                p.Achternaam = :achternaam,
+                p.Geboortedatum = :geboortedatum,
+                p.TypePersoon = :typePersoon,
+                c.Straat = :straatnaam,
+                c.Huisnummer = :huisnummer,
+                c.Toevoeging = :toevoeging,
+                c.Postcode = :postcode,
+                c.Woonplaats = :woonplaats,
+                c.Email = :email,
+                c.Mobiel = :mobiel
+            WHERE
+                p.Id = :PersoonId
+        ";
+
+        $this->db->query($sql);
+        $this->db->bind(':voornaam', $POST['voornaam'], PDO::PARAM_STR);
+        $this->db->bind(':tussenvoegsel', $POST['tussenvoegsel'], PDO::PARAM_STR);
+        $this->db->bind(':achternaam', $POST['achternaam'], PDO::PARAM_STR);
+        $this->db->bind(':geboortedatum', $POST['geboortedatum'], PDO::PARAM_STR);
+        $this->db->bind(':typePersoon', $POST['typePersoon'], PDO::PARAM_STR);
+        $this->db->bind(':straatnaam', $POST['straatnaam'], PDO::PARAM_STR);
+        $this->db->bind(':huisnummer', $POST['huisnummer'], PDO::PARAM_INT);
+        $this->db->bind(':toevoeging', $POST['toevoeging'], PDO::PARAM_STR);
+        $this->db->bind(':postcode', $POST['postcode'], PDO::PARAM_STR);
+        $this->db->bind(':woonplaats', $POST['woonplaats'], PDO::PARAM_STR);
+        $this->db->bind(':email', $POST['email'], PDO::PARAM_STR);
+        $this->db->bind(':mobiel', $POST['mobiel'], PDO::PARAM_STR);
+        $this->db->bind(':PersoonId', $POST['PersoonId'], PDO::PARAM_INT);
+        $this->db->execute();
+
+        // Return the number of affected rows
+        return $this->db->rowCount();
+    } catch (PDOException $error) {
+        echo $error->getMessage();
+        throw $error;
+    }
+}
+
+public function update($POST)
+{
+    try {
+        $sql = "
+             UPDATE Persoon AS p
             INNER JOIN Contact AS c ON p.Id = c.Id
             SET
                 p.Voornaam = :voornaam,
@@ -99,59 +215,23 @@ public function updateinfo($PersoonId, $data)
         ";
 
         $this->db->query($sql);
-        $this->db->bind(':voornaam', $data['voornaam']);
-        $this->db->bind(':tussenvoegsel', $data['tussenvoegsel']);
-        $this->db->bind(':achternaam', $data['achternaam']);
-        $this->db->bind(':geboortedatum', $data['geboortedatum']);
-        $this->db->bind(':typePersoon', $data['typePersoon']);
-        $this->db->bind(':vertegenwoordiger', $data['vertegenwoordiger']);
-        $this->db->bind(':straatnaam', $data['straatnaam']);
-        $this->db->bind(':huisnummer', $data['huisnummer']);
-        $this->db->bind(':toevoeging', $data['toevoeging']);
-        $this->db->bind(':postcode', $data['postcode']);
-        $this->db->bind(':woonplaats', $data['woonplaats']);
-        $this->db->bind(':email', $data['email']);
-        $this->db->bind(':mobiel', $data['mobiel']);
-        $this->db->bind(':persoonId', $PersoonId, PDO::PARAM_INT);
+        $this->db->bind(':voornaam', $POST['voornaam'], PDO::PARAM_STR);
+        $this->db->bind(':tussenvoegsel', $POST['tussenvoegsel'], PDO::PARAM_STR);
+        $this->db->bind(':achternaam', $POST['achternaam'], PDO::PARAM_STR);
+        $this->db->bind(':geboortedatum', $POST['geboortedatum'], PDO::PARAM_STR);
+        $this->db->bind(':typePersoon', $POST['typePersoon'], PDO::PARAM_STR);
+        $this->db->bind(':vertegenwoordiger', $POST['vertegenwoordiger'], PDO::PARAM_INT);
+        $this->db->bind(':straatnaam', $POST['straatnaam'], PDO::PARAM_STR);
+        $this->db->bind(':huisnummer', $POST['huisnummer'], PDO::PARAM_INT);
+        $this->db->bind(':toevoeging', $POST['toevoeging'], PDO::PARAM_STR);
+        $this->db->bind(':postcode', $POST['postcode'], PDO::PARAM_STR);
+        $this->db->bind(':woonplaats', $POST['woonplaats'], PDO::PARAM_STR);
+        $this->db->bind(':email', $POST['email'], PDO::PARAM_STR);
+        $this->db->bind(':mobiel', $POST['mobiel'], PDO::PARAM_STR);
+        $this->db->bind(':persoonId', $POST['persoonId'], PDO::PARAM_INT);
 
         $this->db->execute();
 
-        // Return the number of affected rows
-        return $this->db->rowCount();
-    } catch (PDOException $error) {
-        echo $error->getMessage();
-        throw $error;
-    }
-}
-
-public function update($PersoonId, $data)
-{
-    try {
-        $sql = "
-            UPDATE Persoon
-            SET
-                Voornaam = :voornaam,
-                Tussenvoegsel = :tussenvoegsel,
-                Achternaam = :achternaam,
-                Geboortedatum = :geboortedatum,
-                TypePersoon = :typePersoon,
-                IsVertegenwoordiger = :vertegenwoordiger
-            WHERE
-                Id = :persoonId
-        ";
-
-        $this->db->query($sql);
-        $this->db->bind(':voornaam', $data['voornaam']);
-        $this->db->bind(':tussenvoegsel', $data['tussenvoegsel']);
-        $this->db->bind(':achternaam', $data['achternaam']);
-        $this->db->bind(':geboortedatum', $data['geboortedatum']);
-        $this->db->bind(':typePersoon', $data['typePersoon']);
-        $this->db->bind(':vertegenwoordiger', $data['vertegenwoordiger']);
-        $this->db->bind(':persoonId', $PersoonId, PDO::PARAM_INT);
-
-        $this->db->execute();
-
-        // Return the number of affected rows
         return $this->db->rowCount();
     } catch (PDOException $error) {
         echo $error->getMessage();
