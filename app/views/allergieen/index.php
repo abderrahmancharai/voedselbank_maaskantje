@@ -1,20 +1,22 @@
 <?php require APPROOT . '/views/includes/head.php'; ?>
 <body>
 <p><h3><?= $data["title"]; ?></h3></p>
-  <a href="<?=URLROOT;?>/Klant/create" class="btn btn-primary">toon Gezinnen</a>
 
-  <form action="<?= URLROOT; ?>/allergieen/selectedAllergie" method="POST">
+ <div class="d-flex justify-content-end">
+  <form action="<?= URLROOT; ?>/allergieen/index" method="POST">
         <select name="allergie">
-            <option value="">Selecteer allergie</option>
-            <option value="">Soja</option>
-            <option value="">Lactose</option>
-            <option value="">Hazelnoten</option>
-            <option value="">Schaaldieren</option>
-            <option value="">Pindas</option>
-            <option value="">Gluten</option>
-            <?= $data['dropdown']; ?>
+            <option>Selecteer allergie</option>
+            <option>Soja</option>
+            <option>Lactose</option>
+            <option>Hazelnoten</option>
+            <option>Schaaldieren</option>
+            <option>Pindas</option>
+            <option>Gluten</option>
+           
         </select>
+        <input type="submit" value="toon gezinnen" class="btn btn-secondary">
     </form>
+    </div>
 
     <table class="table">
   <thead class="thead-dark">
@@ -32,6 +34,11 @@
             <?= $data['rows']; ?>
         </tbody>
 </table>
+     <div class="form-group row">
+     <div class="col-md-12 text-md-right">
+        <a class="btn btn-primary" href="<?php URLROOT; ?>/allergieen/index">Home</a>
+    </div>
+</div>
 </body>
 </html>
 

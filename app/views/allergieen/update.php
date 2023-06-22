@@ -8,20 +8,27 @@
          <form action="<?= URLROOT; ?>/allergieen/update" method="post">
 
            
-         <input type="hidden" name="GezinId" value="<?= $data["GezinId"];?>"> 
+         <input type="hidden" name="PersoonId" value="<?= $data["PersoonId"];?>"> 
 
-            <div class="form-group row">
-               <label class="col-sm-3 control-label">Allergie:</label>
-               <input type="text" name ="allergienaam" value="<?= $data["allergienaam"];?>"></input>
-            </div>
+            <select name="allergienaam" class="form-control">
+            <option>Selecteer allergie</option>
+            <option>Soja</option>
+            <option>Lactose</option>
+            <option>Schaaldieren</option>
+            <option>Hazelnoten</option>
+            <option>Pindas</option>
+            <option>Gluten</option>
+            </select>
                 
             <div class="form-group row">
             
-                <input class="btn btn-warning mr-1 " type="submit" value="sla op"> 
+                <input class="btn btn-secondary mr-1 " type="submit" value="wijzige allergie"> 
             </a>
-               <a class="btn btn-primary mr-1" href="<?php URLROOT; ?>/allergieen/allergieendetails/<?= $data["GezinId"];?>">terug</a>
+            <div class="col-md-12 text-md-right">
+               <a class="btn btn-primary mr-1" href="<?php URLROOT; ?>/allergieen/index/<?= $data["PersoonId"];?>">terug</a>
        
-               <a class="btn btn-success" href="<?php URLROOT; ?>/homepages/index/">Home</a>
+               <a class="btn btn-primary" href="<?php URLROOT; ?>/homepages/index/">Home</a>
+               </div>
             </div>
              
              

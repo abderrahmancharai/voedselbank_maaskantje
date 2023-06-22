@@ -20,6 +20,13 @@
             <?= $data['rows']; ?>
         </tbody>
 </table>
+<div class="form-group row">
+            <div class="col-md-12 text-md-right">
+               <a class="btn btn-primary mr-1" href="<?php URLROOT; ?>/allergieen/index/">terug</a>
+       
+               <a class="btn btn-primary" href="<?php URLROOT; ?>/homepages/index/">Home</a>
+               </div>
+            </div>
 </body>
 </html>
 
