@@ -138,7 +138,7 @@ class VoedselPakket extends Controller
       'deleteStatus' => "De Pakket is succesvol verwijderd!"
     ];
     $this->view("VoedselPakket/delete", $data);
-    header("Refresh:3; url=" . URLROOT . "/familie/index");
+    header("Refresh:3; url=" . URLROOT . "/VoedselPakket/index");
   }
     
 }

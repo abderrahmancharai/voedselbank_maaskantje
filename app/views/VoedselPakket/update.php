@@ -5,7 +5,7 @@
    <div class="wrapper-mvckdemo">
       <div class="form-group">
          <h2>wijzigen van Leveranciergegevens</h2>
-         <form action="<?= URLROOT; ?>/Leverancier/update" method="post">
+         <form action="<?= URLROOT; ?>/Voedselpakket/update" method="post">
 
              
          <input type="hidden" name="pakketId" value="<?= $data["pakketId"];?>">
